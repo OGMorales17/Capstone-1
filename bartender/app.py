@@ -11,7 +11,6 @@ from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
 from models import db, connect_db, User, Feedback, Favorite, Drink
 # from secret import API_SECRET_KEY, API_BASE_URL
 
-# For testing use the "API_SECRET_KEY" and "API_BASE_URL" under
 
 API_SECRET_KEY = "1"
 API_BASE_URL = "https://www.thecocktaildb.com/api/json/v1"
@@ -37,16 +36,42 @@ connect_db(app)
 def show_drinks_form():
     return render_template("base.html")
 
-# In the drink_by_name function, Im searching by the first letter
-# I have tried to store the drinks photos (thumb) and the drink name in a list, if I print any of those list I do have the value in it
-# but I'm unable to get those in the html
-
 
 @app.route('/index')
 def drink_by_name():
     name = request.args['name']
     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
-                       params={'f': name})
+                       params={'': name})
+
+    # data = res.json()
+
+    # cocktails = []
+    # # iterate over data.drinks
+    # ingredients = []
+    # # loop over ingredients
+    # measurements = []
+    # # loop over measurements
+
+    # i = 1
+
+    # while i <= 15:
+    #     # set current cocktail
+    #     curcocktail = data['drinks'][i]
+
+    #     # create a new cocktail
+    #     cocktail = {
+    #         'name': curcocktail['strDrink'],
+    #         'thumb': curcocktail['strDrinkThumb'],
+    #         'ingredients': ingredients,
+    #         'measurements': measurements,
+    #         'instructions': curcocktail['strInstructions']
+    #     }
+    #     # append our cocktail to array
+    #     cocktails.append(cocktail)
+
+    #     i += 1
+
+    # return render_template('index.html', cocktails=cocktails)
 
     data = res.json()
     cocktail_name = data['drinks'][0]['strDrink']
@@ -56,10 +81,6 @@ def drink_by_name():
     ingredients = []
     measurements = []
 
-    # names = []
-    # thumbs = []
-    # instructions = []
-
     i = 1
 
     while i <= 15:
@@ -67,40 +88,21 @@ def drink_by_name():
         cocktail_ingredient = data['drinks'][0]['strIngredient' + str(i)]
         cocktail_measure = data['drinks'][0]['strMeasure' + str(i)]
 
-        # cocktail_name = data['drinks'][0]['strDrink' + str(i)]
-        # cocktail_thumb = data['drinks'][0]['strDrinkThumb' + str(i)]
-        # cocktail_instructions = data['drinks'][0]['strInstructions' + str(i)]
-
         if cocktail_ingredient != None:
             ingredients.append(cocktail_ingredient)
 
         if cocktail_measure != None:
             measurements.append(cocktail_measure)
 
-        # if cocktail_name != None:
-        #     names.append(cocktail_name)
-
-        # if cocktail_thumb != None:
-        #     thumbs.append(cocktail_thumb)
-
-        # if cocktail_thumb != None:
-        #     thumbs.append(cocktail_thumb)
-
         i += 1
 
-    print('************', measurements)
-
     cocktail_instructions = data['drinks'][0]['strInstructions']
-
-    # cocktail_category = cocktail['drinks'][0]['strCategory']
-
-    # cocktail = {'name': names, 'thumb': thumbs, 'ingredients': ingredients,
-    #             'measurements': measurements, 'instructions': instructions}
+    cocktail_category = data['drinks'][0]['strCategory']
 
     cocktail = {'name': cocktail_name, 'thumb': cocktail_thumb, 'ingredients': ingredients,
-                'measurements': measurements, 'instructions': cocktail_instructions}
+                'measurements': measurements, 'instructions': cocktail_instructions, 'category': cocktail_category}
 
-    return render_template('base.html', cocktail=cocktail)
+    return render_template('index.html', cocktail=cocktail)
 
 
 ##############################################################################
