@@ -1,0 +1,5 @@
+https://whimsical.com/thecoctaildb-K4awnCZKo5ofuQKAzdzVQZ@2Ux7TurymMbypZQbt8Gj
+
+The following link is for the API that I'm going to use
+
+https://www.thecocktaildb.com/api.php?ref=apilist.fun
