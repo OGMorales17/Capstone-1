@@ -296,27 +296,35 @@
 </header> -->
 
 ------------------------------------------------------------------->
+<!-- This file is for the index.html -->
 
-	  <div class="container">
-      <h1>Random Cocktail</h1>
+{% extends 'base.html' %}
+{% block title %}Drinks{% endblock %}
+
+{% block content %}
+
+
+
+        <div class="container">
+			<h1>Search Cocktail by First Letter</h1>
 
 			<div class="content">
 				<div>
-					<h2><b>{{ data.name }}</b></h2>
-					<img src="{{ data.thumb }}" class="thumb-img">
-					<p><em><b>{{ data.instructions }}</b></em></p>
+					<h2><b>{{ cocktail.name }}</b></h2>
+					<p><b>Category : {{ cocktail.category }}</b></p>
+					<img src="{{ cocktail.thumb }}" class="thumb-img">
+					<p><em><b>{{ cocktail.instructions }}</b></em></p>
 				</div>
-
 				<div>
 					<h4><b>Ingredients</b></h4>
 					<ul>
-						{% for ingredient in data.ingredients %}
+						{% for ingredient in cocktail.ingredients %}
 						<li><b>{{ ingredient }}</b></li>
 						{% endfor %}
 					</ul>
 					<h4><b>Measurements</b></h4>
 					<ul>
-						{% for measurement in data.measurements %}
+						{% for measurement in cocktail.measurements %}
 						<li><b>{{ measurement }}</b></li>
 						{% endfor %}
 					</ul>
@@ -325,15 +333,4 @@
 		</div>
 
 
-
-
-
-                  {% for ingredient in cocktail.ingredients %}
-              <li><b>{{ ingredient }}</b></li>
-              {% endfor %}
-            </ul>
-            <h4><b>Measurements</b></h4>
-            <ul>
-              {% for measurement in cocktail.measurements %}
-              <li><b>{{ measurement }}</b></li>
-              {% endfor %}
+{% endblock %}

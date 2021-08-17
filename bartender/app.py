@@ -9,11 +9,8 @@ import psycopg2
 
 from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
 from models import db, connect_db, User, Feedback, Favorite, Drink
-# from secret import API_SECRET_KEY, API_BASE_URL
+from secret import API_SECRET_KEY, API_BASE_URL
 
-
-API_SECRET_KEY = "1"
-API_BASE_URL = "https://www.thecocktaildb.com/api/json/v1"
 
 CURR_USER_KEY = "curr_user"
 
@@ -34,46 +31,18 @@ connect_db(app)
 
 @app.route('/')
 def show_drinks_form():
-    return render_template("base.html")
+
+    return render_template("home.html")
 
 
 @app.route('/index')
 def drink_by_name():
     name = request.args['name']
     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
-                       params={'': name})
-
-    # data = res.json()
-
-    # cocktails = []
-    # # iterate over data.drinks
-    # ingredients = []
-    # # loop over ingredients
-    # measurements = []
-    # # loop over measurements
-
-    # i = 1
-
-    # while i <= 15:
-    #     # set current cocktail
-    #     curcocktail = data['drinks'][i]
-
-    #     # create a new cocktail
-    #     cocktail = {
-    #         'name': curcocktail['strDrink'],
-    #         'thumb': curcocktail['strDrinkThumb'],
-    #         'ingredients': ingredients,
-    #         'measurements': measurements,
-    #         'instructions': curcocktail['strInstructions']
-    #     }
-    #     # append our cocktail to array
-    #     cocktails.append(cocktail)
-
-    #     i += 1
-
-    # return render_template('index.html', cocktails=cocktails)
+                       params={'s': name})
 
     data = res.json()
+
     cocktail_name = data['drinks'][0]['strDrink']
     cocktail_thumb = data['drinks'][0]['strDrinkThumb']
     cocktail_instructions = data['drinks'][0]['strInstructions']
@@ -201,11 +170,53 @@ def logout():
 ##############################################################################
 # Homepage and error pages
 
-@app.route('/')
-def homepage():
-    """Show homepage"""
 
-    if g.user:
-        return redirect("/users")
-    else:
-        return render_template('base.html')
+# @app.route('/')
+# def homepage():
+#     """Show homepage:
+
+#     - anon users: no messages
+#     - logged in: 100 most recent messages of followed_users
+#     """
+
+#     if g.user:
+#         following_ids = [f.id for f in g.user.following] + [g.user.id]
+
+#         messages = (Message
+#                     .query
+#                     .filter(Message.user_id.in_(following_ids))
+#                     .order_by(Message.timestamp.desc())
+#                     .limit(100)
+#                     .all())
+
+#         liked_msg_ids = [msg.id for msg in g.user.likes]
+
+#         return render_template('home.html', messages=messages, likes=liked_msg_ids)
+
+#     else:
+#         return render_template('home-anon.html')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """404 NOT FOUND page."""
+
+    return render_template('404/404.html'), 404
+
+
+##############################################################################
+# Turn off all caching in Flask
+#   (useful for dev; in production, this kind of stuff is typically
+#   handled elsewhere)
+#
+# https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
+
+@app.after_request
+def add_header(req):
+    """Add non-caching headers on every request."""
+
+    req.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    req.headers["Pragma"] = "no-cache"
+    req.headers["Expires"] = "0"
+    req.headers['Cache-Control'] = 'public, max-age=0'
+    return req
