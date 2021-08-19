@@ -12,10 +12,12 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True,)
 
-    age_checker = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True,)
     username = db.Column(db.Text, nullable=False, unique=True,)
     password = db.Column(db.Text, nullable=False,)
+
+    def __repr__(self):
+        return f"<User #{self.id}: {self.username}, {self.email}>"
 
     @classmethod
     def signup(cls, username, password, email):

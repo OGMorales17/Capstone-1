@@ -3,24 +3,24 @@ class UI {
     // Display all the drink categories
     displayCategories() {
         const categoryList = cocktail.getCategories()
-        .then(categories => {
-            const catList = categories.categories.drinks;
+            .then(categories => {
+                const catList = categories.categories.drinks;
 
-            // Append a first option without value
-            const firstOption = document.createElement("option");
-            firstOption.textContent = "- Select -";
-            firstOption.value = "";
-            document.querySelector("#search").appendChild(firstOption);
-            // Append into the select
-            catList.forEach(category => {
-                const option = document.createElement("option");
-                option.textContent = category.strCategory;
-                option.value = category.strCategory.split(" ").join("_");
-                document
-                  .querySelector("#search")
-                  .appendChild(option);
+                // Append a first option without value
+                const firstOption = document.createElement("option");
+                firstOption.textContent = "- Select -";
+                firstOption.value = "";
+                document.querySelector("#search").appendChild(firstOption);
+                // Append into the select
+                catList.forEach(category => {
+                    const option = document.createElement("option");
+                    option.textContent = category.strCategory;
+                    option.value = category.strCategory.split(" ").join("_");
+                    document
+                        .querySelector("#search")
+                        .appendChild(option);
+                });
             });
-        });
     }
     // Display the cocktails without ingredient
     displayDrinks(drinks) {
@@ -66,14 +66,12 @@ class UI {
                         <button type="button" data-id="${drink.idDrink}" class="favorite-btn btn btn-outline-info">
                         +
                         </button>
-                        <img class="card-img-top" src="${
-                            drink.strDrinkThumb
-                        }" alt="${drink.strDrink}">
+                        <img class="card-img-top" src="${drink.strDrinkThumb
+                }" alt="${drink.strDrink}">
 
                         <div class="card-body">
-                            <h2 class="card-title text-center">${
-                                drink.strDrink
-                            }</h2>
+                            <h2 class="card-title text-center">${drink.strDrink
+                }</h2>
                             <p class="card-text font-weight-bold">Instructions: </p>
                             <p class="card-text">
                                 ${drink.strInstructions}
@@ -103,14 +101,14 @@ class UI {
 
     // Prints the ingredients and measurements
     displayIngredients(drink) {
-    // console.log(drink);
+        // console.log(drink);
         let ingredients = [];
         for (let i = 1; i < 16; i++) {
             const ingredientMeasure = {};
             if (drink[`strIngredient${i}`] != "") {
-            ingredientMeasure.ingredient = drink[`strIngredient${i}`];
-            ingredientMeasure.measure = drink[`strMeasure${i}`];
-            ingredients.push(ingredientMeasure);
+                ingredientMeasure.ingredient = drink[`strIngredient${i}`];
+                ingredientMeasure.measure = drink[`strMeasure${i}`];
+                ingredients.push(ingredientMeasure);
             }
         }
 
@@ -207,7 +205,7 @@ class UI {
         const drinks = cocktailDB.getFromDB();
         drinks.forEach(drink => {
             // Destructuring the id
-            let {id} = drink;
+            let { id } = drink;
             // Select the favorites
             let favoriteDrink = document.querySelector(`[data-id="${id}"]`);
             if (favoriteDrink) {
