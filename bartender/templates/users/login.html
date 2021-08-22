@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
-{% block body_class %}onboarding{% endblock %}
+{% block title %}Login{% endblock %}
+
 
 {% block content %}
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Welcome back</h1>
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
       </div>
     </div>
   </section>

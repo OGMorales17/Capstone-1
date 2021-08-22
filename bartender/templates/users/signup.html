@@ -7,7 +7,9 @@
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Join Bartender Club today</h1>
-
+          {% for category, message in get_flashed_messages(with_categories=True) %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
       </div>
     </div>
   </section>

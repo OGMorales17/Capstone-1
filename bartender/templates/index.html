@@ -18,34 +18,47 @@
   </section>
 
 
-{% if cocktail %}
-	<div class="container">
-		<h1>Search Cocktail by First Letter</h1>
 
-		<div class="content">
-			<div>
-				<h2><b>{{ cocktail.name }}</b></h2>
-				<p><b>Category : {{ cocktail.category }}</b></p>
-				<img src="{{ cocktail.thumb }}" class="thumb-img">
-				<p><em><b>{{ cocktail.instructions }}</b></em></p>
-			</div>
-			<div>
-				<h4><b>Ingredients</b></h4>
-				<ul>
-					{% for ingredient in cocktail.ingredients %}
-					<li><b>{{ ingredient }}</b></li>
-					{% endfor %}
-				</ul>
-				<h4><b>Measurements</b></h4>
-				<ul>
-					{% for measurement in cocktail.measurements %}
-					<li><b>{{ measurement }}</b></li>
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
-	</div>
-{% endif %}
+
+  {% if cocktails|length == 0 %}
+    <h3>Sorry, no cocktails found</h3>
+  {% else %}
+    <div class="row justify-content-center">
+      <div class="col-sm-9">
+        <div class="row">
+
+          {% for cocktail in cocktails %}
+
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="card user-card">
+                <div class="card-inner">
+                  <div class="image-wrapper">
+                    <img src="{{ cocktail.thumb }}" alt="" class="card-hero">
+                  </div>
+                  <div class="card-contents">
+                      <p>{{ cocktail.name }}</p>
+                      <!-- <p>@{{ cocktail.instructions }}</p> -->
+				  </div>
+	            </div>
+              </div>
+            </div>
+
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <footer class="text-muted py-5">
+    <div class="container">
+      <p class="float-end mb-1">
+        <a href="#">Back to top</a>
+      </p>
+      <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+      <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
+    </div>
+  </footer>
 
 
 {% endblock %}

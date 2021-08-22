@@ -226,168 +226,68 @@
 
 
 
-    <!-- <div class="container">
-      <h1>Random Cocktail</h1>
-
-			<div class="content">
-				<div>
-					<h2><b>{{ data.name }}</b></h2>
-					<img src="{{ data.thumb }}" class="thumb-img">
-					<p><em><b>{{ data.instructions }}</b></em></p>
-				</div>
-
-				<div>
-					<h4><b>Ingredients</b></h4>
-					<ul>
-						{% for ingredient in data.ingredients %}
-						<li><b>{{ ingredient }}</b></li>
-						{% endfor %}
-					</ul>
-					<h4><b>Measurements</b></h4>
-					<ul>
-						{% for measurement in data.measurements %}
-						<li><b>{{ measurement }}</b></li>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div> -->
 
 
-
-  ----------------------------------------------------------------------->
-
-
-	<!-- <header>
-  <div class="collapse bg-dark" id="navbarHeader">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-md-7 py-4">
-          <h4 class="text-white">About</h4>
-          <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
-        </div>
-        <div class="col-sm-4 offset-md-1 py-4">
-          <ul class="list-unstyled">
-           {% if not g.user %}
-           <li><a href="/login" class="text-white">Login</a></li>
-           <li><a href="signup" class="text-white">Signup</a></li>
-           {% else %}
-          <li><a href="/favorites" class="text-white">My Favorites</a></li>
-          <li><a href="/logout" class="text-white">Logout</a></li>
-           {% endif %}
-
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="navbar navbar-dark bg-dark shadow-sm">
-  <div class="container">
-    <a href="#" class="navbar-brand d-flex align-items-center">
-      <i class="fas fa-cocktail"></i>
-      <strong>Drinks</strong>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-</div>
-
-</header> -->
 
 ------------------------------------------------------------------->
-<!-- This file is for the index.html -->
 
-{% extends 'base.html' %}
-{% block title %}Drinks{% endblock %}
+
 
 {% block content %}
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Welcome back</h1>
+      </div>
+    </div>
+  </section>
 
 
+  <div class="row justify-content-md-center">
+    <div class="col-md-7 col-lg-5">
+      <form method="POST" id="user_form">
+        {{ form.hidden_tag() }}
 
-        <div class="container">
-			<h1>Search Cocktail by First Letter</h1>
+        {% for field in form if field.widget.input_type != 'hidden' %}
+          {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+          {{ field(placeholder=field.label.text, class="form-control") }}
+        {% endfor %}
 
-			<div class="content">
-				<div>
-					<h2><b>{{ cocktail.name }}</b></h2>
-					<p><b>Category : {{ cocktail.category }}</b></p>
-					<img src="{{ cocktail.thumb }}" class="thumb-img">
-					<p><em><b>{{ cocktail.instructions }}</b></em></p>
-				</div>
-				<div>
-					<h4><b>Ingredients</b></h4>
-					<ul>
-						{% for ingredient in cocktail.ingredients %}
-						<li><b>{{ ingredient }}</b></li>
-						{% endfor %}
-					</ul>
-					<h4><b>Measurements</b></h4>
-					<ul>
-						{% for measurement in cocktail.measurements %}
-						<li><b>{{ measurement }}</b></li>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div>
-
+        <button class="btn btn-primary btn-block btn-lg">Log in</button>
+      </form>
+    </div>
+  </div>
 
 {% endblock %}
 
 
+<!-- ------------------------------------------------ -->
 
-<!-- -------------------------------------------------------------- -->
+	<!-- <div class="container">
+		<h1>Search Cocktail by Name</h1>
 
-<!-- <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark py-2">
-  <div class="container-fluid mx-4">
-    <a href="/" class="navbar-brand d-flex align-items-center">
-      <i class="fas fa-cocktail"></i>
-      <strong>Drinks</strong>
-    </a>
-
-    <div class="collapse navbar-collapse" id="navbarColor02">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Category</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Ordinary Drink</a>
-            <a class="dropdown-item" href="#">Cocktail</a>
-            <a class="dropdown-item" href="#">Milk / Float / Shake</a>
-            <a class="dropdown-item" href="#">Other / Unknow</a>
-            <a class="dropdown-item" href="#">Cocoa</a>
-            <a class="dropdown-item" href="#">Shot</a>
-            <a class="dropdown-item" href="#">Coffe / Tea</a>
-            <a class="dropdown-item" href="#">Homemade Liqueur</a>
-            <a class="dropdown-item" href="#">Punch / Party Drink</a>
-            <a class="dropdown-item" href="#">Beer</a>
-            <a class="dropdown-item" href="#">Soft Drink / Soda</a>
-          </div>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Alcohol/Non Alcohol</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Alcoholic</a>
-            <a class="dropdown-item" href="#">Non Alcoholic</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Ingredients</a>
-        </li>
-
-      </ul>
-
-      <form class="d-flex">
-           {% if not g.user %}
-           <li><a href="/login" class="text-white">Login</a></li>
-           <li><a href="signup" class="text-white">Signup</a></li>
-           {% else %}
-          
-          <li><a href="/favorites" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
-          <li><a href="/logout" class="text-white">Logout</a></li>
-           {% endif %}
-      </form>
-    </div>
-  </div>
-</nav> -->
+		<div class="content">
+			<div>
+				<h2><b>{{ cocktail.name }}</b></h2>
+				<p><b>Category : {{ cocktail.category }}</b></p>
+				<img src="{{ cocktail.thumb }}" class="thumb-img">
+				<p><em><b>{{ cocktail.instructions }}</b></em></p>
+			</div>
+			<div>
+				<h4><b>Ingredients</b></h4>
+				<ul>
+					{% for ingredient in cocktail.ingredients %}
+					<li><b>{{ ingredient }}</b></li>
+					{% endfor %}
+				</ul>
+				<h4><b>Measurements</b></h4>
+				<ul>
+					{% for measurement in cocktail.measurements %}
+					<li><b>{{ measurement }}</b></li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div> -->

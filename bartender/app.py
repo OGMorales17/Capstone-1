@@ -37,41 +37,33 @@ def show_drinks_form():
 
 @app.route('/index')
 def drink_by_name():
+    # Searching by the first letter
     name = request.args['name']
     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
-                       params={'s': name})
+                       params={'f': name})
 
     data = res.json()
 
-    cocktail_name = data['drinks'][0]['strDrink']
-    cocktail_thumb = data['drinks'][0]['strDrinkThumb']
-    cocktail_instructions = data['drinks'][0]['strInstructions']
-
-    ingredients = []
-    measurements = []
+    cocktails = []
 
     i = 1
 
     while i <= 15:
 
-        cocktail_ingredient = data['drinks'][0]['strIngredient' + str(i)]
-        cocktail_measure = data['drinks'][0]['strMeasure' + str(i)]
+        curcocktail = data['drinks'][i]
 
-        if cocktail_ingredient != None:
-            ingredients.append(cocktail_ingredient)
+        cocktail = {
+            'name': curcocktail['strDrink'],
+            'thumb': curcocktail['strDrinkThumb'],
+            'instructions': curcocktail['strInstructions']
+        }
 
-        if cocktail_measure != None:
-            measurements.append(cocktail_measure)
+        cocktails.append(cocktail)
 
         i += 1
 
-    cocktail_instructions = data['drinks'][0]['strInstructions']
-    cocktail_category = data['drinks'][0]['strCategory']
-
-    cocktail = {'name': cocktail_name, 'thumb': cocktail_thumb, 'ingredients': ingredients,
-                'measurements': measurements, 'instructions': cocktail_instructions, 'category': cocktail_category}
-
-    return render_template('index.html', cocktail=cocktail)
+        print("***************", cocktail['name'])
+    return render_template('index.html', cocktails=cocktails)
 
 
 ##############################################################################

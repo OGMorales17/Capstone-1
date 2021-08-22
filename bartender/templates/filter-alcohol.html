@@ -3,4 +3,40 @@
 {% block title %}Filter Alcohol{% endblock %}
 
 {% block content %}
+
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Search Cocktails</h1>
+        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+
+        <form class="d-flex" action="">
+          <select class="form-select" aria-label="Default select example" name="Alcohol/Non Alcohol">
+              <option selected>Select from category</option>
+              <option value="Alcoholic">Alcoholic</option>
+              <option value="Non Alcoholic">Non Alcoholic</option>
+          </select>
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+
+
+{% if cocktail %}
+<!-- loop over the content in JS and render here -->
+{% endif %}
+
+  <footer class="text-muted py-5">
+    <div class="container">
+      <p class="float-end mb-1">
+        <a href="#">Back to top</a>
+      </p>
+      <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+      <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
+    </div>
+  </footer>
+
 {% endblock %}
