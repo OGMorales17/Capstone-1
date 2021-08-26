@@ -26,29 +26,20 @@
     <div class="row justify-content-center">
       <div class="col-sm-9">
         <div class="row">
-
-          {% for cocktail in cocktails %}
-
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="card user-card">
-                <div class="card-inner">
-                  <div class="image-wrapper">
-                    <img src="{{ cocktail.thumb }}" alt="" class="card-hero">
-                  </div>
-                  <div class="card-contents">
-                      <p>{{ cocktail.name }}</p>
-                      <!-- <p>@{{ cocktail.instructions }}</p> -->
-				  </div>
-	            </div>
-              </div>
-            </div>
-
-          {% endfor %}
-
+        {% for cocktail in cocktails %}
+        <div class="card user-card">
+          <div class="card-inner">
+            <div class="image-wrapper"><img src="{{ cocktail.thumb }}" alt="" class="card-hero"></div>
+            <div class="card-contents"><p>{{ cocktail.name }}</p></div>
+          </div>
+        </div>
+        {% endfor %}
         </div>
       </div>
     </div>
   {% endif %}
+
+
 
   <footer class="text-muted py-5">
     <div class="container">
