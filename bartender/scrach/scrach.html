@@ -291,3 +291,81 @@
 			</div>
 		</div>
 	</div> -->
+
+
+<!-- ------------------------------------------------ -->
+
+
+
+
+  <div class="container">
+    <div class="row justify-content">
+      <div class="col-md-auto">
+      <ul>
+      {% for measurement in cocktail.measurements %}
+      <ul>{{ measurement }} - </ul>
+      {% endfor %}
+      </ul>
+      </div>
+      <div class="col-md-auto">
+      <ul>
+      {% for ingredient in cocktail.ingredients %}
+      <ul>{{ ingredient }}</ul>
+      {% endfor %}
+      </ul>
+      </div>
+    </div>
+  </div>
+
+<!-- ------------------------------------------------ -->
+
+<!-- This code is for putting ingredients and measurement side by side-->
+
+
+  <!-- <ul>
+  {% for i,m in zip(cocktail.ingredients, cocktail.measurements) %}
+  <ul>{{ i }} - <b>{{ m }}</b></ul>
+  {% endfor %}
+  </ul> -->
+
+<!-- ------------------------------------------------ -->
+
+
+
+    {% if cocktails|length == 0 %}
+    <h3>Sorry, no cocktails found</h3>
+  {% else %}
+  {% for cocktail in cocktails %}
+    <div class="row justify-content-center">
+      <div class="col-sm-9">
+        <div class="row">
+        <div class="card user-card">
+          <div class="card-inner">
+            <img class="contain" src="{{ cocktail.thumb }}" alt="">
+            <div class="card-contents"><p>{{ cocktail.name }}</p></div>
+            <p> {{ cocktail.instructions }}</p>
+            <div class="container">
+            <div class="row justify-content">
+              <div class="col-md-auto">
+              <ul>
+                {% for ingredient in cocktail.ingredients %}
+                <ul>{{ ingredient }}</ul>
+                {% endfor %}
+              </ul>
+              </div>
+              <div class="col-md-auto">
+              <ul>
+                {% for measurement in cocktail.measurements %}
+                <ul>{{ measurement }}</ul>
+                {% endfor %}
+              </ul>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   {% endfor %}
+  {% endif %}

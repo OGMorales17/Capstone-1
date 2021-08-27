@@ -14,7 +14,7 @@
 
 
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid mx-5">
       <a class="navbar-brand" href="/"><i class="fas fa-cocktail"></i>Drinks</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,10 +49,16 @@
   
 
 
-
+<div class="container text-center mt-5">
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
 
   {% block content %}
   {% endblock %}
+
+</div>
+
 
 
 

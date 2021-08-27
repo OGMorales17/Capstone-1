@@ -1,11 +1,12 @@
 import os
-from re import search
+from re import M, search
 
 from flask import Flask, render_template, request, flash, redirect, session, g, abort
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 import psycopg2
+import itertools
 
 from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
 from models import db, connect_db, User, Feedback, Favorite, Drink
@@ -15,6 +16,8 @@ from secret import API_SECRET_KEY, API_BASE_URL
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
+app.jinja_env.filters['zip'] = zip
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL', 'postgresql:///bartender')
@@ -43,37 +46,32 @@ def drink_by_letter():
                        params={'f': name})
 
     data = res.json()
+    drinks = data['drinks']
 
     cocktails = []
-    ingredients = []
-    measurements = []
 
-    i = 1
+    for drink in drinks:
 
-    while i <= 15:
-        curcocktail = data['drinks'][i]
-        cocktail_ingredient = data['drinks'][0]['strIngredient' + str(i)]
-        cocktail_measure = data['drinks'][0]['strMeasure' + str(i)]
+        ingredients = []
+        measurements = []
+
+        for key in drink:
+            if "strIngredient" in key and drink[key] != None:
+                ingredients.append(drink[key])
+            if "strMeasure" in key and drink[key] != None:
+                measurements.append(drink[key])
 
         cocktail = {
-            'name': curcocktail['strDrink'],
-            'thumb': curcocktail['strDrinkThumb'],
-            'instructions': curcocktail['strInstructions'],
+            'name': drink['strDrink'],
+            'thumb': drink['strDrinkThumb'],
+            'instructions': drink['strInstructions'],
             'ingredients': ingredients,
             'measurements': measurements
         }
+
         cocktails.append(cocktail)
 
-        if cocktail_ingredient != None:
-            ingredients.append(cocktail_ingredient)
-
-        if cocktail_measure != None:
-            measurements.append(cocktail_measure)
-
-        i += 1
-        print("***************", cocktail)
-
-    return render_template('index.html', cocktails=cocktails)
+    return render_template('index.html', cocktails=cocktails, zip=zip)
 
 
 ##############################################################################
@@ -166,7 +164,7 @@ def logout():
     do_logout()
 
     flash("You have successfully logged out.", 'success')
-    return redirect("/login")
+    return redirect("/")
 
 
 ##############################################################################
