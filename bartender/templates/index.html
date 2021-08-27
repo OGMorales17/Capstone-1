@@ -3,6 +3,8 @@
 
 {% block content %}
 
+<main>
+
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
@@ -17,18 +19,15 @@
     </div>
   </section>
 
+  
 
-
-
-
-  <!--  ------------------------------------------------------------- -->
-  {% if cocktails|length == 0 %}
-  <h3>Sorry, no cocktails found</h3>
-  {% else %}
-  {% for cocktail in cocktails %}
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% if cocktails|length == 0 %}
+          <h3>Sorry, no users found</h3>
+        {% else %}
+        {% for cocktail in cocktails %}
         <div class="col">
           <div class="card shadow-sm">
             <img class="contain" src="{{ cocktail.thumb }}" alt="">
@@ -42,22 +41,33 @@
             </div>
           </div>
         </div>
+        {% endfor %}
+        {% endif %}
       </div>
     </div>
   </div>
-  {% endfor %}
-  {% endif %}
+
+</main>
+
+
+<footer class="text-muted py-5">
+  <div class="container">
+    <p class="float-end mb-1">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+    <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
+  </div>
+</footer>
+
+
+{% endblock %}
+ 
 
 
 
 
 
-
-
-
-
-
-                
 
 
 
@@ -83,16 +93,3 @@
 
 
 
-
-  <footer class="text-muted py-5">
-    <div class="container">
-      <p class="float-end mb-1">
-        <a href="#">Back to top</a>
-      </p>
-      <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-      <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
-    </div>
-  </footer>
-
-
-{% endblock %}
