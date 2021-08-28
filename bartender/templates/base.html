@@ -23,10 +23,10 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item dropdown">
-            <a class="nav-link" href="/category.html">Category</a>
+            <a class="nav-link" href="/category">Category</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/filter-alcohol">Alcohol/Non Alcohol</a>
+            <a class="nav-link" href="/filter_alcohol">Alcohol/Non Alcohol</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/ingredients" tabindex="-1">Ingredients</a>
@@ -49,7 +49,7 @@
   
 
 
-<div class="container text-center mt-5">
+<div class="container text-center">
   {% for category, message in get_flashed_messages(with_categories=True) %}
   <div class="alert alert-{{ category }}">{{ message }}</div>
   {% endfor %}

@@ -37,6 +37,30 @@ def show_drinks_form():
 
     return render_template("home.html")
 
+##############################################################################
+# Searching routes
+
+
+@app.route('/category')
+def category():
+
+    return render_template("/category.html")
+
+
+@app.route('/filter_alcohol')
+def filter_alcohol():
+
+    return render_template("/filter_alcohol.html")
+
+
+@app.route('/ingredients')
+def ingredients():
+
+    return render_template("/ingredients.html")
+
+##############################################################################
+# API calls
+
 
 @app.route('/index')
 def drink_by_letter():
@@ -72,6 +96,32 @@ def drink_by_letter():
         cocktails.append(cocktail)
 
     return render_template('index.html', cocktails=cocktails, zip=zip)
+
+
+@app.route('/category')
+def drink_by_category():
+    # Searching by category
+    select = request.args['select']
+    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
+                       params={'c': select})
+
+    data = res.json()
+    print("********************", data)
+    drinks = data['drinks']
+
+    cocktails = []
+
+    for drink in drinks:
+
+        cocktail = {
+            'name': drink['strDrink'],
+            'thumb': drink['strDrinkThumb']
+
+        }
+
+        cocktails.append(cocktail)
+
+    return render_template('category.html', cocktails=cocktails, zip=zip)
 
 
 ##############################################################################
