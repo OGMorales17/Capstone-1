@@ -10,7 +10,12 @@ import itertools
 
 from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
 from models import db, connect_db, User, Feedback, Favorite, Drink
-from secret import API_SECRET_KEY, API_BASE_URL
+# from secret import API_SECRET_KEY, API_BASE_URL
+
+# https://www.thecocktaildb.com/api.php?ref=apilist.fun
+
+API_BASE_URL = "https://www.thecocktaildb.com/api/json/v1"
+API_SECRET_KEY = "1"
 
 
 CURR_USER_KEY = "curr_user"
@@ -186,19 +191,18 @@ def drink_by_letter():
 
 #         cocktails.append(cocktail)
 #     print('***************', cocktail)
-#     # return cocktail
-#     return render_template('home.html', cocktails=cocktails)
+#     return cocktail
+    # return render_template('home.html', cocktails=cocktails)
 
 
-# @app.route('/')
-# def index():
+@app.route('/')
+def index():
 
-#     getRandomCocktail()
+    getRandomCocktail()
 
-#     data = getRandomCocktail()
+    data = getRandomCocktail()
 
-
-#     return render_template('home.html', data=data)
+    return render_template('home.html', data=data)
 
 
 ##############################################################################
