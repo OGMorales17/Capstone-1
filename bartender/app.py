@@ -59,12 +59,24 @@ def ingredients():
     return render_template("/ingredients.html")
 
 ##############################################################################
+# Get the details for a drink when click view
+
+
+@app.route('/drink_details')
+def details():
+
+    return render_template("/drink_details.html")
+
+##############################################################################
 # API calls
+
+    # Searching by the first letter using params={'f': name}
+    # Searching by name using params={'s': name}
+    # Most populars, don not need params, just change the end point to "popular.php"
 
 
 @app.route('/index')
 def drink_by_letter():
-    # Searching by the first letter
     name = request.args['name']
     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
                        params={'f': name})
@@ -97,31 +109,123 @@ def drink_by_letter():
 
     return render_template('index.html', cocktails=cocktails, zip=zip)
 
+##############################################################################
 
-@app.route('/category')
-def drink_by_category():
-    # Searching by category
-    select = request.args['select']
-    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
-                       params={'c': select})
 
-    data = res.json()
-    print("********************", data)
-    drinks = data['drinks']
+# @app.route('/')
+# def most_popular():
+#     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/popular.php")
 
-    cocktails = []
+#     data = res.json()
+#     drinks = data['drinks']
 
-    for drink in drinks:
+#     cocktails = []
 
-        cocktail = {
-            'name': drink['strDrink'],
-            'thumb': drink['strDrinkThumb']
+#     for drink in drinks:
 
-        }
+#         ingredients = []
+#         measurements = []
 
-        cocktails.append(cocktail)
+#         for key in drink:
+#             if "strIngredient" in key and drink[key] != None:
+#                 ingredients.append(drink[key])
+#             if "strMeasure" in key and drink[key] != None:
+#                 measurements.append(drink[key])
 
-    return render_template('category.html', cocktails=cocktails, zip=zip)
+#         cocktail = {
+#             'name': drink['strDrink'],
+#             'thumb': drink['strDrinkThumb'],
+#             'instructions': drink['strInstructions'],
+#             'ingredients': ingredients,
+#             'measurements': measurements
+#         }
+
+#         cocktails.append(cocktail)
+
+#         print("****************", cocktails)
+
+#     return render_template('home.html', cocktails=cocktails, zip=zip)
+
+
+##############################################################################
+
+
+# def getRandomCocktail():
+#     # This will return a list of 10 random selection
+
+#     r = requests.get(
+#         "f{API_BASE_URL}/{API_SECRET_KEY}/randomselection.php")
+
+#     # This will return a list of the most populars
+#     # r = requests.get(
+#     #     "f{API_BASE_URL}/{API_SECRET_KEY}/popular.php"/popular.php')
+
+#     data = r.json()
+#     drinks = data['drinks']
+
+#     cocktails = []
+
+#     for drink in drinks:
+
+#         ingredients = []
+#         measurements = []
+
+#         for key in drink:
+#             if "strIngredient" in key and drink[key] != None:
+#                 ingredients.append(drink[key])
+#             if "strMeasure" in key and drink[key] != None:
+#                 measurements.append(drink[key])
+
+#         cocktail = {
+#             'name': drink['strDrink'],
+#             'thumb': drink['strDrinkThumb'],
+#             'instructions': drink['strInstructions'],
+#             'ingredients': ingredients,
+#             'measurements': measurements
+#         }
+
+#         cocktails.append(cocktail)
+#     print('***************', cocktail)
+#     # return cocktail
+#     return render_template('home.html', cocktails=cocktails)
+
+
+# @app.route('/')
+# def index():
+
+#     getRandomCocktail()
+
+#     data = getRandomCocktail()
+
+
+#     return render_template('home.html', data=data)
+
+
+##############################################################################
+
+
+# @app.route('/category')
+# def drink_by_category():
+#     # Searching by category
+#     select = request.args['select']
+#     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
+#                        params={'c': select})
+
+#     data = res.json()
+#     drinks = data['drinks']
+
+#     cocktails = []
+
+#     for drink in drinks:
+
+#         cocktail = {
+#             'name': drink['strDrink'],
+#             'thumb': drink['strDrinkThumb']
+#         }
+
+#         cocktails.append(cocktail)
+
+#     return render_template('category.html', cocktails=cocktails, zip=zip)
 
 
 ##############################################################################
