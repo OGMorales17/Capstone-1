@@ -240,15 +240,43 @@ def drink_by_alcoholic():
     return render_template('filter_alcohol.html', cocktails=cocktails, zip=zip)
 
 
+##############################################################################
+# The next function stil under construction
+
+# def ingredients_list():
+#     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/list.php?i=list")
+
+#     data = res.json()
+#     drink_ingredients = data['drink_ingredients']
+
+#     ingredients = []
+
+#     for ingredient in drink_ingredients:
+
+#         ingredient = {
+#             'name': ingredient['strIngredient1']
+#         }
+
+#         ingredients.append(ingredient)
+#         print('******************', ingredients)
+
+#     return ingredients_list
+
+
+#########################################
+
+
 @app.route('/ingredient')
 def search_by_ingredients():
+
+    # ing_list = ingredients_list()
 
     ingredient = request.args.get('ingredient')
     cocktails = []
 
     if ingredient:
 
-        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
+        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/list.php",
                            params={'i': ingredient})
 
         data = res.json()
@@ -266,6 +294,7 @@ def search_by_ingredients():
 
             cocktails.append(cocktail)
 
+    # return render_template('ingredient.html', cocktails=cocktails, ing_list=ing_list, zip=zip)
     return render_template('ingredient.html', cocktails=cocktails, zip=zip)
 
 

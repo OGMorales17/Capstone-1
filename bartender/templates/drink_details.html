@@ -48,42 +48,58 @@
 </header>
 
 
+
+
 <main>
+	<div class="container text-center">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+		<hr class="featurette-divider">
+
+		  <div class="row featurette">
+        <div class="col-md-7 order-md-2">
+          {% for cocktail in cocktails %}
+          <h2 class="featurette-heading">{{ cocktail.name }}.</h2>
+          <p class="lead">{{ cocktail.instructions }}</p>
+          <ul>
+          {% for i,m in zip(cocktail.ingredients, cocktail.measurements) %}
+          <ul><p>{{ m }}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{ i }}</p></ul>
+          {% endfor %}
+          </ul>
+          <div class="btn-group">
+            <a href="/users/favorite">
+              <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+            </a>
+          </div>
+          <div class="btn-group">
+            <a href="/">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Go Back</button>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-5 order-md-1">
+          <div class="card shadow-sm">
+            <img class="contain" src="{{ cocktail.thumb }}" alt="">
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    <hr class="featurette-divider">
+  </div>
+</main>
+  
   
 
 
-	<div class="container text-center">
-	{% for category, message in get_flashed_messages(with_categories=True) %}
-	<div class="alert alert-{{ category }}">{{ message }}</div>
-	{% endfor %}
 
-	<!-- main -->
-		<hr class="featurette-divider">
 		
-		<div class="row featurette">
-		<div class="col-md-7 order-md-2">
-			{% for cocktail in cocktails %}
-			<h2 class="featurette-heading">{{ cocktail.name }}.</h2>
-			<p class="lead">{{ cocktail.instructions }}</p>
-			<ul>
-			{% for i,m in zip(cocktail.ingredients, cocktail.measurements) %}
-			<ul><p>{{ m }}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{ i }}</p></ul>
-			{% endfor %}
-			</ul>
-			</div>
-			<div class="col-md-5 order-md-1">
-			<div class="card shadow-sm">
-			<img class="contain" src="{{ cocktail.thumb }}" alt="">
-			{% endfor %}
-			</div>
-		</div>
-		</div>
 
-		<hr class="featurette-divider">
-	<!-- main -->
-    </div>
 
-</main>
+
+                                
+
 
 
   <footer class="text-muted py-5 mt-5">
