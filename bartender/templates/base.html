@@ -54,6 +54,7 @@
 <div class="container text-center">
   
   {% block content %}
+  
   {% endblock %}
   {% for category, message in get_flashed_messages(with_categories=True) %}
   <div class="alert alert-{{ category }}">{{ message }}</div>
@@ -89,13 +90,15 @@
   </div>
 </div>
 
-  <footer class="text-muted py-5 mt-5">
+  <footer class="text-muted py-5 mt-3">
     <div class="container">
       <p class="float-end mb-1">
         <a href="#">Back to top</a>
       </p>
-      <p class="mb-2">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-      <p class="mb-0">Don't know what to pick, Not worries, we can pick a <a href="/random_cocktails" class="link-secondary" name="random_cocktails">random selection</a> fo you  <a href="../getting-started/introduction/"></a>.</p>
+      <p class="mb-3">Don't know what to pick, Not worries, we can pick a <a href="/random_cocktails" name="random_cocktails">random selection</a> fo you.</p>
+
+      <p class="mb-0">Or you can go to the top and search by the name, You don't remember the name! Not worries.</p>
+      <p class="mb-0">Click <a href="/letter">here</a>  and seach by the first letter.</p>
     </div>
   </footer>
 

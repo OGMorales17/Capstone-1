@@ -11,6 +11,7 @@ import itertools
 from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
 from models import db, connect_db, User, Feedback, Favorite, Drink
 from secret import API_SECRET_KEY, API_BASE_URL
+from helpers import get_cocktails_from_api_response
 
 
 CURR_USER_KEY = "curr_user"
@@ -31,6 +32,9 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
 
+#######################################################
+# This are callback
+
 
 @app.route('/')
 def show_drinks_form():
@@ -44,8 +48,15 @@ def random_drinks_form():
     return render_template("random_cocktails.html", cocktails=cocktails)
 
 
-##############################################################################
+@app.route('/letter')
+def letter_drinks_form():
+
+    return render_template("letter.html")
+
+
 # API calls
+##############################################################################
+# By the name and first letter
 
 
 @app.route('/index')
@@ -55,31 +66,96 @@ def drink_by_name():
                        params={'s': name})
 
     data = res.json()
-    drinks = data['drinks']
-
-    cocktails = []
-
-    for drink in drinks:
-
-        ingredients = []
-        measurements = []
-
-        for key in drink:
-            if "strIngredient" in key and drink[key] != None:
-                ingredients.append(drink[key])
-            if "strMeasure" in key and drink[key] != None:
-                measurements.append(drink[key])
-
-        cocktail = {
-            'id': drink['idDrink'],
-            'name': drink['strDrink'],
-            'thumb': drink['strDrinkThumb']
-        }
-
-        cocktails.append(cocktail)
+    cocktails = get_cocktails_from_api_response(data)
 
     return render_template('index.html', cocktails=cocktails, zip=zip)
 
+
+@app.route('/search_by_letter')
+def search_by_letter():
+
+    letter = request.args['letter']
+    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
+                       params={'f': letter})
+
+    data = res.json()
+    cocktails = get_cocktails_from_api_response(data)
+
+    return render_template('letter.html', cocktails=cocktails)
+
+
+##############################################################################
+# The API calls that dosn't neeed queries
+
+
+def most_popular_cocktails():
+    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/popular.php")
+
+    data = res.json()
+    return get_cocktails_from_api_response(data)
+
+
+def random_cocktails():
+    res = requests.get(
+        f"{API_BASE_URL}/{API_SECRET_KEY}/randomselection.php")
+
+    data = res.json()
+    return get_cocktails_from_api_response(data)
+
+
+##############################################################################
+# The navbar Links
+
+@app.route('/category')
+def drink_by_category():
+
+    category = request.args.get('category')
+    cocktails = []
+
+    if category:
+        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
+                           params={'c': category})
+
+        data = res.json()
+        cocktails = get_cocktails_from_api_response(data)
+
+    return render_template('category.html', cocktails=cocktails, zip=zip)
+
+
+@app.route('/filter_alcohol')
+def drink_by_alcoholic():
+
+    filter_alcohol = request.args.get('filter_alcohol')
+    cocktails = []
+
+    if filter_alcohol:
+        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
+                           params={'a': filter_alcohol})
+
+        data = res.json()
+        cocktails = get_cocktails_from_api_response(data)
+
+    return render_template('filter_alcohol.html', cocktails=cocktails, zip=zip)
+
+
+@app.route('/ingredient')
+def search_by_ingredients():
+
+    ingredient = request.args.get('ingredient')
+    cocktails = []
+
+    if ingredient:
+        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
+                           params={'i': ingredient})
+
+        data = res.json()
+        cocktails = get_cocktails_from_api_response(data)
+
+    return render_template('ingredient.html', cocktails=cocktails, zip=zip)
+
+
+#############################################################################
+# Get all the details of the drink
 
 @app.route('/drink_details')
 def details_by_id():
@@ -116,190 +192,9 @@ def details_by_id():
 
     return render_template('drink_details.html', cocktails=cocktails, zip=zip)
 
-
-##############################################################################
-
-
-def most_popular_cocktails():
-    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/popular.php")
-
-    data = res.json()
-    drinks = data['drinks']
-
-    cocktails = []
-
-    for drink in drinks:
-
-        ingredients = []
-        measurements = []
-
-        for key in drink:
-            if "strIngredient" in key and drink[key] != None:
-                ingredients.append(drink[key])
-            if "strMeasure" in key and drink[key] != None:
-                measurements.append(drink[key])
-
-        cocktail = {
-            'id': drink['idDrink'],
-            'name': drink['strDrink'],
-            'thumb': drink['strDrinkThumb']
-        }
-
-        cocktails.append(cocktail)
-
-    return cocktails
-
-
-def random_cocktails():
-    res = requests.get(
-        f"{API_BASE_URL}/{API_SECRET_KEY}/randomselection.php")
-
-    data = res.json()
-    drinks = data['drinks']
-
-    random_cocktails = []
-
-    for drink in drinks:
-
-        ingredients = []
-        measurements = []
-
-        for key in drink:
-            if "strIngredient" in key and drink[key] != None:
-                ingredients.append(drink[key])
-            if "strMeasure" in key and drink[key] != None:
-                measurements.append(drink[key])
-
-        cocktail = {
-            'id': drink['idDrink'],
-            'name': drink['strDrink'],
-            'thumb': drink['strDrinkThumb']
-        }
-
-        random_cocktails.append(cocktail)
-
-    return random_cocktails
-
-
-##############################################################################
-
-
-@app.route('/category')
-def drink_by_category():
-
-    category = request.args.get('category')
-
-    cocktails = []
-    if category:
-        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
-                           params={'c': category})
-
-        data = res.json()
-        drinks = data['drinks']
-
-        cocktails = []
-
-        for drink in drinks:
-
-            cocktail = {
-                'id': drink['idDrink'],
-                'name': drink['strDrink'],
-                'thumb': drink['strDrinkThumb']
-            }
-
-            cocktails.append(cocktail)
-
-    return render_template('category.html', cocktails=cocktails, zip=zip)
-
-
-@app.route('/filter_alcohol')
-def drink_by_alcoholic():
-
-    filter_alcohol = request.args.get('filter_alcohol')
-
-    cocktails = []
-    if filter_alcohol:
-        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
-                           params={'a': filter_alcohol})
-
-        data = res.json()
-        drinks = data['drinks']
-
-        cocktails = []
-
-        for drink in drinks:
-
-            cocktail = {
-                'id': drink['idDrink'],
-                'name': drink['strDrink'],
-                'thumb': drink['strDrinkThumb']
-            }
-
-            cocktails.append(cocktail)
-
-    return render_template('filter_alcohol.html', cocktails=cocktails, zip=zip)
-
-
-##############################################################################
-# The next function stil under construction
-
-# def ingredients_list():
-#     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/list.php?i=list")
-
-#     data = res.json()
-#     drink_ingredients = data['drink_ingredients']
-
-#     ingredients = []
-
-#     for ingredient in drink_ingredients:
-
-#         ingredient = {
-#             'name': ingredient['strIngredient1']
-#         }
-
-#         ingredients.append(ingredient)
-#         print('******************', ingredients)
-
-#     return ingredients_list
-
-
-#########################################
-
-
-@app.route('/ingredient')
-def search_by_ingredients():
-
-    # ing_list = ingredients_list()
-
-    ingredient = request.args.get('ingredient')
-    cocktails = []
-
-    if ingredient:
-
-        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/list.php",
-                           params={'i': ingredient})
-
-        data = res.json()
-        drinks = data['drinks']
-
-        cocktails = []
-
-        for drink in drinks:
-
-            cocktail = {
-                'id': drink['idDrink'],
-                'name': drink['strDrink'],
-                'thumb': drink['strDrinkThumb']
-            }
-
-            cocktails.append(cocktail)
-
-    # return render_template('ingredient.html', cocktails=cocktails, ing_list=ing_list, zip=zip)
-    return render_template('ingredient.html', cocktails=cocktails, zip=zip)
-
-
 ##############################################################################
 # User signup/login/logout
+
 
 @app.before_request
 def add_user_to_g():
@@ -398,32 +293,6 @@ def logout():
 def user_favorite():
 
     return render_template("users/favorite.html")
-
-
-# @app.route('/')
-# def homepage():
-#     """Show homepage:
-
-#     - anon users: no messages
-#     - logged in: 100 most recent messages of followed_users
-#     """
-
-#     if g.user:
-#         following_ids = [f.id for f in g.user.following] + [g.user.id]
-
-#         messages = (Message
-#                     .query
-#                     .filter(Message.user_id.in_(following_ids))
-#                     .order_by(Message.timestamp.desc())
-#                     .limit(100)
-#                     .all())
-
-#         liked_msg_ids = [msg.id for msg in g.user.likes]
-
-#         return render_template('home.html', messages=messages, likes=liked_msg_ids)
-
-#     else:
-#         return render_template('home-anon.html')
 
 
 @app.errorhandler(404)
