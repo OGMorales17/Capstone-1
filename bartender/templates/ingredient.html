@@ -35,34 +35,8 @@
 
   
 
-  <div class="album py-5">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if cocktails|length == 0 %}
-          <h3>Sorry, no cocktail found</h3>
-        {% else %}
-        {% for cocktail in cocktails %}
-        <div class="col">
-          <div class="card shadow-sm">
-            <img class="contain" src="{{ cocktail.thumb }}" alt="">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <p class="text-center">{{ cocktail.name }}</p>
-                <div class="btn-group">
-                  <a href="/drink_details?drink_id={{cocktail.id}}">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-      </div>
-    </div>
-  </div>
-
 </main>
 
 
 {% endblock %}
+
