@@ -45,13 +45,13 @@ def show_drinks_form():
 @app.route('/random_cocktails')
 def random_drinks_form():
     cocktails = random_cocktails()
-    return render_template("random_cocktails.html", cocktails=cocktails)
+    return render_template("drinks/random_cocktails.html", cocktails=cocktails)
 
 
 @app.route('/letter')
 def letter_drinks_form():
 
-    return render_template("letter.html")
+    return render_template("drinks/letter.html")
 
 
 # API calls
@@ -68,7 +68,25 @@ def drink_by_name():
     data = res.json()
     cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('index.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/index.html', cocktails=cocktails)
+
+
+##############################################################################
+# The API calls that dosn't neeed queries
+# This "by_name_on_random()" function is to take the input on random_cocktail, search on the DB by the name, and render on index.html
+
+@app.route('/random_cocktails')
+def by_name_on_random():
+    name = request.args['name']
+    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
+                       params={'s': name})
+
+    data = res.json()
+    cocktails = get_cocktails_from_api_response(data)
+
+    return render_template('drinks/index.html', cocktails=cocktails)
+
+##############################################################################
 
 
 @app.route('/search_by_letter')
@@ -81,23 +99,21 @@ def search_by_letter():
     data = res.json()
     cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('letter.html', cocktails=cocktails)
+    return render_template('drinks/letter.html', cocktails=cocktails)
 
 
 ##############################################################################
-# The API calls that dosn't neeed queries
 
-
-def most_popular_cocktails():
-    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/popular.php")
+def random_cocktails():
+    res = requests.get(
+        f"{API_BASE_URL}/{API_SECRET_KEY}/randomselection.php")
 
     data = res.json()
     return get_cocktails_from_api_response(data)
 
 
-def random_cocktails():
-    res = requests.get(
-        f"{API_BASE_URL}/{API_SECRET_KEY}/randomselection.php")
+def most_popular_cocktails():
+    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/popular.php")
 
     data = res.json()
     return get_cocktails_from_api_response(data)
@@ -119,7 +135,7 @@ def drink_by_category():
         data = res.json()
         cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('category.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/category.html', cocktails=cocktails, zip=zip)
 
 
 @app.route('/filter_alcohol')
@@ -135,7 +151,7 @@ def drink_by_alcoholic():
         data = res.json()
         cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('filter_alcohol.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/filter_alcohol.html', cocktails=cocktails, zip=zip)
 
 
 @app.route('/ingredient')
@@ -151,7 +167,7 @@ def search_by_ingredients():
         data = res.json()
         cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('ingredient.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/ingredient.html', cocktails=cocktails, zip=zip)
 
 
 #############################################################################
@@ -190,7 +206,7 @@ def details_by_id():
 
         cocktails.append(cocktail)
 
-    return render_template('drink_details.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/drink_details.html', cocktails=cocktails, zip=zip)
 
 ##############################################################################
 # User signup/login/logout
@@ -293,6 +309,32 @@ def logout():
 def user_favorite():
 
     return render_template("users/favorite.html")
+
+
+# @app.route('/')
+# def homepage():
+#     """Show homepage:
+
+#     - anon users: no messages
+#     - logged in: 100 most recent messages of followed_users
+#     """
+
+#     if g.user:
+#         following_ids = [f.id for f in g.user.following] + [g.user.id]
+
+#         messages = (Message
+#                     .query
+#                     .filter(Message.user_id.in_(following_ids))
+#                     .order_by(Message.timestamp.desc())
+#                     .limit(100)
+#                     .all())
+
+#         liked_msg_ids = [msg.id for msg in g.user.likes]
+
+#         return render_template('home.html', messages=messages, likes=liked_msg_ids)
+
+#     else:
+#         return render_template('home-anon.html')
 
 
 @app.errorhandler(404)

@@ -51,56 +51,6 @@
   
 
 
-<div class="container text-center">
-  
-  {% block content %}
-  
-  {% endblock %}
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
-  {% endfor %}
-
-    <div class="album py-5">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if cocktails %}
-        {% for cocktail in cocktails %}
-        <div class="col">
-          <div class="card shadow-lg">
-            <img class="contain rounded-top" src="{{ cocktail.thumb }}" alt="">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <p class="text-center">{{ cocktail.name }}</p>
-                <div class="btn-group">
-                  <a href="/drink_details?drink_id={{cocktail.id}}">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  </a>
-                  <a href="/users/favorite">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</div>
-
-  <footer class="text-muted py-5 mt-3">
-    <div class="container">
-      <p class="float-end mb-1">
-        <a href="#">Back to top</a>
-      </p>
-      <p class="mb-3">Don't know what to pick, Not worries, we can pick a <a href="/random_cocktails" name="random_cocktails">random selection</a> fo you.</p>
-
-      <p class="mb-0">Or you can go to the top and search by the name, You don't remember the name! Not worries.</p>
-      <p class="mb-0">Click <a href="/letter">here</a>  and seach by the first letter.</p>
-    </div>
-  </footer>
 
 
 
@@ -115,4 +65,3 @@
 </body>
 
 </html>
-    
