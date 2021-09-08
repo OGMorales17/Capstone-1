@@ -69,11 +69,9 @@ class Drink(db.Model):
     __tablename__ = 'drinks'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # Remove drink_info and add the ones that are muted
-    # drink_id = db.Column(db.Text, nullable=False, unique=True)
-    drink_name = db.Column(db.Text, nullable=False, unique=True)
-    # thum = db.Column(db.Text, nullable=False, unique=True)
-    drink_info = db.Column(db.Text, nullable=False, unique=True)
+    drink_id = db.Column(db.Text, nullable=False, unique=True)
+    name = db.Column(db.Text, nullable=False, unique=True)
+    thum = db.Column(db.Text, nullable=False, unique=True)
 
 
 class Favorite(db.Model):
@@ -86,10 +84,7 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='cascade'))
     drink_id = db.Column(db.Integer, db.ForeignKey(
-        'drinks.id', ondelete='cascade'))
-    # Remove the row on the top and add the next one
-    # drink_id = db.Column(db.Integer, db.ForeignKey(
-    #     'drinks.drink_id', ondelete='cascade'))
+        'drinks.drink_id', ondelete='cascade'))
 
 
 class Feedback(db.Model):
@@ -99,14 +94,10 @@ class Feedback(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    drink_id = db.Column(db.Integer, db.ForeignKey(
-        'drinks.id', ondelete='cascade'))
-    # drink_id = db.Column(db.Integer, db.ForeignKey(
-    #     'drinks.drink_id', ondelete='cascade'))
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='cascade'))
-    # Remove the content from the table and use the rating only
-    content = db.Column(db.Text, nullable=False)
+    drink_id = db.Column(db.Integer, db.ForeignKey(
+        'drinks.drink_id', ondelete='cascade'))
     rating = db.Column(db.Integer, nullable=False)
 
 
