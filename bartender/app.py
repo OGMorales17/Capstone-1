@@ -48,6 +48,16 @@ def random_drinks_form():
     return render_template("drinks/random_cocktails.html", cocktails=cocktails)
 
 
+# Give the users a list of all ingredients that can ve add to a drink
+
+
+@app.route('/ingredient')
+def list_of_ingredients():
+    ingredients = all_ingredients()
+    print(ingredients)
+    return render_template("drinks/ingredient.html", ingredients=ingredients)
+
+
 @app.route('/letter')
 def letter_drinks_form():
 
@@ -119,8 +129,31 @@ def most_popular_cocktails():
     return get_cocktails_from_api_response(data)
 
 
+def all_ingredients():
+    res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/list.php?i=list")
+
+    data = res.json()
+    drinks = data['drinks']
+    all_cocktails = []
+
+    for drink in drinks:
+        # cocktail = {
+        #     'ingredients': drink["strIngredient1"]
+        # }
+        # print('>>>>>>>>>>>>>>>>>>>', cocktail)
+
+        # cocktails.append(cocktail)
+        print('--------------------', drink)
+        # all_cocktails.append(drink)
+
+    # print('***************', all_cocktails)
+
+    return all_cocktails
+    # return all_ingredients
+
+
 ##############################################################################
-# The navbar Links
+# The navbar route Links
 
 @app.route('/category')
 def drink_by_category():
@@ -303,38 +336,71 @@ def logout():
 
 
 ##############################################################################
+
+# Create a users_show route that will show user home page with all its favorite drinks, its favorite drinks will use the base temple
+# to render the drinks, if any drinks in user favorite will show up
+@app.route('/users/<int:user_id>')
+def users_show(user_id):
+    """Show user profile."""
+    user = User.query.get_or_404(user_id)
+
+    cocktail = Favorite.query.order_by(Favorite.drink_id).all()
+
+    for drink in cocktail:
+        print(f'{drink.drink_id}')
+
+    return render_template('users/favorite.html', user=user, cocktail=cocktail)
+
+
+# @app.route('/users/favorite/<int:drink_id>', methods=["POST"])
+# def add_favorite(drink_id):
+#     """Add Drink id to user favorite."""
+
+#     user_id = request.form.get('user_id')
+#     # user = User.query.get_or_404(user_id)
+
+#     # check if drink with drink_id exists
+#     # get drink details
+
+#     # check if drink with id exists
+
+#     drink_object = Drink.query.filter_by(drink_info=str(drink_id)).first()
+
+#     if not drink_object:
+#         res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/lookup.php",
+#                            params={'i': drink_id})
+
+#         data = res.json()
+#         drinks = data['drinks'][0]
+#         drink_id = drinks['idDrink']
+#         drink_name = drinks['strDrink']
+
+#         new_drink = Drink(drink_name=drink_name, drink_info=drink_id)
+#         db.session.add(new_drink)
+#         db.session.commit()
+
+#     else:
+
+#         drink_id_in_table = drink_object.id
+
+#     try:
+#         new_fav = Favorite(user_id=user_id, drink_id=drink_id_in_table)
+#         db.session.add(new_fav)
+#         db.session.commit()
+
+#         return {'success': True}
+
+#     except:
+#         return {'success': False}
+
+
+##############################################################################
 # Homepage and error pages
 
 @app.route('/users/favorite')
 def user_favorite():
 
     return render_template("users/favorite.html")
-
-
-# @app.route('/')
-# def homepage():
-#     """Show homepage:
-
-#     - anon users: no messages
-#     - logged in: 100 most recent messages of followed_users
-#     """
-
-#     if g.user:
-#         following_ids = [f.id for f in g.user.following] + [g.user.id]
-
-#         messages = (Message
-#                     .query
-#                     .filter(Message.user_id.in_(following_ids))
-#                     .order_by(Message.timestamp.desc())
-#                     .limit(100)
-#                     .all())
-
-#         liked_msg_ids = [msg.id for msg in g.user.likes]
-
-#         return render_template('home.html', messages=messages, likes=liked_msg_ids)
-
-#     else:
-#         return render_template('home-anon.html')
 
 
 @app.errorhandler(404)

@@ -60,7 +60,7 @@
   <div class="alert alert-{{ category }}">{{ message }}</div>
   {% endfor %}
 
-    <div class="album py-5">
+  <div class="album py-5">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% if cocktails %}
@@ -75,9 +75,15 @@
                   <a href="/drink_details?drink_id={{cocktail.id}}">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                   </a>
-                  <a href="/users/favorite">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                  {% if g.user %}
+                  <form method="POST" action="/users/favorite/{{ cocktail.id }}">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                  </form>
+                  {% else %}
+                  <a href="/signup">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
                   </a>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -89,6 +95,7 @@
     </div>
   </div>
 </div>
+
 
   <footer class="text-muted py-5 mt-3">
     <div class="container">

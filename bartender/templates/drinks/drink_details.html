@@ -68,15 +68,18 @@
           {% endfor %}
           </ul>
           <div class="btn-group">
-            <a href="/users/favorite">
+          {% if g.user %}
+            <form method="POST" action="/users/favorite/{{ cocktail.id }}">
+              <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+            </form>
+            {% else %}
+            <a href="/signup">
               <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
             </a>
+          {% endif %}
           </div>
           <div class="btn-group">
-
-            
-              <button type="button" class="btn btn-sm btn-outline-secondary" id="go-back">Go back!</button>
-        
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="go-back">Go back!</button>
           </div>
         </div>
         <div class="col-md-5 order-md-1">
@@ -90,6 +93,9 @@
     <hr class="featurette-divider">
   </div>
 </main>
+
+            
+        
   
   
 

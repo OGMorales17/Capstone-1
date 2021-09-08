@@ -402,3 +402,126 @@
 
 
 
+<!-- Base.html -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
+
+<div class="container text-center">
+  
+  {% block content %}
+  
+  {% endblock %}
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+
+  <div class="album py-5">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% if cocktails %}
+        {% for cocktail in cocktails %}
+        <div class="col">
+          <div class="card shadow-lg">
+            <img class="contain rounded-top" src="{{ cocktail.thumb }}" alt="">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="text-center">{{ cocktail.name }}</p>
+                <div class="btn-group">
+                  <a href="/drink_details?drink_id={{cocktail.id}}">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                  </a>
+                  <!--  -->
+                  <!-- <a href="/users/favorite">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                  </a> -->
+                  {% if g.user %}
+                  <form method="POST"
+                  action="/users/favorite/{{ cocktail.id }}">
+                  <!-- <button type="button" class="btn btn-sm btn-outline-secondary" onClick="add_fav(`{{cocktail.id}}`, `{{g.user.id}}`)">Save it</button> -->
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                  </form>
+                  {% else %}
+                  <a href="/signup">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS 
+// function add_fav(drink_id, user_id) {
+
+//   $.post('/users/favorite/' + drink_id,
+//     { 'user_id': user_id },
+//     function (response) {
+//       if (response.success) {
+//         alert("Drink added!")
+//       } else {
+//         alert("Failed to add Drink.")
+//       }
+
+//     });
+
+
+// }
+
+-->
+
+<!-- 
+
+
+
+  # @app.route('/users/favorite/<int:drink_id>', methods=["POST"])
+# def add_new_favourite(drink_id):
+#     """Add Drink id to user favorite."""
+
+#     user_id = request.form.get('user_id')
+#     user = User.query.get_or_404(user_id)
+
+#     print(f"drink_id : {drink_id}")
+#     print(f"user_id : {user_id}")
+
+#     # check if drink with drink_id exists
+#     # get drink details
+
+#     # check if drink with id exists
+
+#     drink_object = Drink.query.filter_by(drink_info=str(drink_id)).first()
+
+#     if not drink_object:
+#         res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/lookup.php",
+#                            params={'i': drink_id})
+
+#         data = res.json()
+#         drinks = data['drinks'][0]
+#         drink_id = drinks['idDrink']
+#         drink_name = drinks['strDrink']
+
+#         new_drink = Drink(drink_name=drink_name, drink_info=drink_id)
+#         db.session.add(new_drink)
+#         db.session.commit()
+#         print("added new drink")
+
+#     else:
+
+#         drink_id_in_table = drink_object.id
+
+#     try:
+#         new_fav = Favorite(user_id=user_id, drink_id=drink_id_in_table)
+#         db.session.add(new_fav)
+#         db.session.commit()
+
+#         return {'success': True}
+
+#     except:
+#         return {'success': False}
+ -->

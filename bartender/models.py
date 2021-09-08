@@ -61,12 +61,10 @@ class Drink(db.Model):
     __tablename__ = 'drinks'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # remove drink_name in a drop db, and add drink_id
     drink_name = db.Column(db.Text, nullable=False, unique=True)
+    # drink_id = db.Column(db.Text, nullable=False, unique=True)
     drink_info = db.Column(db.Text, nullable=False, unique=True)
-    # drink_thumb = db.Column(db.Text, nullable=False, unique=True)
-    # drink_instructions = db.Column(db.Text, nullable=False, unique=True)
-    # drink_ingredients = db.Column(db.Text, nullable=False, unique=True)
-    # drink_measurements = db.Column(db.Text, nullable=False, unique=True)
 
 
 class Favorite(db.Model):
