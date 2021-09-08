@@ -1,115 +1,84 @@
-# data = res.json()
+# Inside the ingredients file
 
-# cocktails = []
-# # iterate over data.drinks
-# ingredients = []
-# # loop over ingredients
-# measurements = []
-# # loop over measurements
+#     <p>
+#     <button class = "btn btn-primary" type = "button" data-bs-toggle = "collapse" data-bs-target = "#collapseExample" aria-expanded = "false" aria-controls = "collapseExample" >
+#     Ingredients
+#     </button >
+#     <div class = "collapse" id = "collapseExample" >
+#     </p>
 
-# i = 1
-
-# while i <= 15:
-#     # set current cocktail
-#     curcocktail = data['drinks'][i]
-
-#     # create a new cocktail
-#     cocktail = {
-#         'name': curcocktail['strDrink'],
-#         'thumb': curcocktail['strDrinkThumb'],
-#         'ingredients': ingredients,
-#         'measurements': measurements,
-#         'instructions': curcocktail['strInstructions']
-#     }
-#     # append our cocktail to array
-#     cocktails.append(cocktail)
-
-#     i += 1
-
-# return render_template('index.html', cocktails=cocktails)
-
-# ------------------------------------------------------------------------------------>
-# @app.route('/index')
-# def drink_by_name():
-# Searching by name
-# name = request.args['name']
-# res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
-#                    params={'s': name})
-
-# data = res.json()
-
-# cocktail_name = data['drinks'][0]['strDrink']
-# cocktail_thumb = data['drinks'][0]['strDrinkThumb']
-# cocktail_instructions = data['drinks'][0]['strInstructions']
-
-# ingredients = []
-# measurements = []
-
-# i = 1
-
-# while i <= 15:
-
-#     cocktail_ingredient = data['drinks'][0]['strIngredient' + str(i)]
-#     cocktail_measure = data['drinks'][0]['strMeasure' + str(i)]
-
-#     if cocktail_ingredient != None:
-#         ingredients.append(cocktail_ingredient)
-
-#     if cocktail_measure != None:
-#         measurements.append(cocktail_measure)
-
-#     i += 1
-
-# cocktail_instructions = data['drinks'][0]['strInstructions']
-# cocktail_category = data['drinks'][0]['strCategory']
-
-# cocktail = {'name': cocktail_name, 'thumb': cocktail_thumb, 'ingredients': ingredients,
-#             'measurements': measurements, 'instructions': cocktail_instructions, 'category': cocktail_category}
-
-# return render_template('index.html', cocktail=cocktail)
+#      <div class = "card card-body" >
+#         <!-- {% for ing in ingredients % }
+#         <ul > {{ing['strIngredient1']}} < /ul >
+#         { % endfor % }       - ->
+#         <!-- Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger. - ->
+#       </div>
+#     </div>
+# -------------------------------------------------------------------------------------------->
 
 
-# ---------------------------------------------------------------------------->
+# Create an autocomplete for the ingredients
+# Give the users a list of all ingredients that can ve add to a drink
+# @app.route('/ingredient')
+# def list_of_ingredients():
+#     ingredients = all_ingredients()
 
-# @app.route('/index')
-# def drink_by_name():
-#     # Searching by the first letter
-#     name = request.args['name']
-#     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
-#                        params={'f': name})
+#     return render_template("drinks/ingredient.html", ingredients=ingredients)
+
+# -------------------------------------------------------------------------------------------->
+
+# def all_ingredients():
+#     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/list.php?i=list")
 
 #     data = res.json()
+#     drinks = data['drinks']
+#     all_cocktails = []
 
-#     cocktails = []
-#     # ingredients = []
-#     # measurements = []
+#     for drink in drinks:
+#         all_cocktails.append(drink)
 
-#     i = 1
+#     return all_cocktails
 
-#     while i <= 15:
 
-#         curcocktail = data['drinks'][i]
-#         # cocktail_ingredient = data['drinks'][0]['strIngredient' + str(i)]
-#         # cocktail_measure = data['drinks'][0]['strMeasure' + str(i)]
+# -------------------------------------------------------------------------------------------->
 
-#         cocktail = {
-#             'name': curcocktail['strDrink'],
-#             'thumb': curcocktail['strDrinkThumb'],
-#             # 'ingredients': ingredients,
-#             # 'measurements': measurements,
-#             'instructions': curcocktail['strInstructions']
-#         }
+# @app.route('/users/favorite/<int:drink_id>', methods=["POST"])
+# def add_favorite(drink_id):
+#     """Add Drink id to user favorite."""
 
-#         cocktails.append(cocktail)
+#     user_id = request.form.get('user_id')
+#     # user = User.query.get_or_404(user_id)
 
-#         # if cocktail_ingredient != None:
-#         #     ingredients.append(cocktail_ingredient)
+#     # check if drink with drink_id exists
+#     # get drink details
 
-#         # if cocktail_measure != None:
-#         #     measurements.append(cocktail_measure)
+#     # check if drink with id exists
 
-#         i += 1
+#     drink_object = Drink.query.filter_by(drink_info=str(drink_id)).first()
 
-#         print("***************", cocktail['name'])
+#     if not drink_object:
+#         res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/lookup.php",
+#                            params={'i': drink_id})
 
-#     return render_template('index.html', cocktails=cocktails)
+#         data = res.json()
+#         drinks = data['drinks'][0]
+#         drink_id = drinks['idDrink']
+#         drink_name = drinks['strDrink']
+
+#         new_drink = Drink(drink_name=drink_name, drink_info=drink_id)
+#         db.session.add(new_drink)
+#         db.session.commit()
+
+#     else:
+
+#         drink_id_in_table = drink_object.id
+
+#     try:
+#         new_fav = Favorite(user_id=user_id, drink_id=drink_id_in_table)
+#         db.session.add(new_fav)
+#         db.session.commit()
+
+#         return {'success': True}
+
+#     except:
+#         return {'success': False}

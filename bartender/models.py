@@ -4,6 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
+# In the Drink table add, drink_id, thum, and remove drink_info
+# add a function in the User table that will check if drink_id is within User Favorite, if found return it.
+# In the user favorite.html only show the cocktail name and thum, but if the user click on detail, then make an API request of just for that expecific drink_id, and render into drink detail page
+
+# In the Favorite table remove the FK to the Drink id and make a new one to the drink_id
+
+# In the Feedback table remove the FK to the Drink id and make a new one to the drink_id, also remove content from the table and use the rating only, this way I'm not letting the user write conten that may not be appropiate to the view of others.
+
 
 class User(db.Model):
     """User in the system."""
@@ -61,9 +69,10 @@ class Drink(db.Model):
     __tablename__ = 'drinks'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # remove drink_name in a drop db, and add drink_id
-    drink_name = db.Column(db.Text, nullable=False, unique=True)
+    # Remove drink_info and add the ones that are muted
     # drink_id = db.Column(db.Text, nullable=False, unique=True)
+    drink_name = db.Column(db.Text, nullable=False, unique=True)
+    # thum = db.Column(db.Text, nullable=False, unique=True)
     drink_info = db.Column(db.Text, nullable=False, unique=True)
 
 
@@ -78,6 +87,9 @@ class Favorite(db.Model):
         'users.id', ondelete='cascade'))
     drink_id = db.Column(db.Integer, db.ForeignKey(
         'drinks.id', ondelete='cascade'))
+    # Remove the row on the top and add the next one
+    # drink_id = db.Column(db.Integer, db.ForeignKey(
+    #     'drinks.drink_id', ondelete='cascade'))
 
 
 class Feedback(db.Model):
@@ -89,8 +101,11 @@ class Feedback(db.Model):
 
     drink_id = db.Column(db.Integer, db.ForeignKey(
         'drinks.id', ondelete='cascade'))
+    # drink_id = db.Column(db.Integer, db.ForeignKey(
+    #     'drinks.drink_id', ondelete='cascade'))
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='cascade'))
+    # Remove the content from the table and use the rating only
     content = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
 
