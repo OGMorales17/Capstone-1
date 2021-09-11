@@ -1,15 +1,16 @@
 import os
 from re import M, search
 
-from flask import Flask, render_template, request, flash, redirect, session, g, abort
+from flask import Flask, render_template, request, flash, redirect, session, g, abort, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 import psycopg2
 import itertools
+import pdb
 
 from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
-from models import db, connect_db, User, Feedback, Favorite, Drink
+from models import db, connect_db, User, Feedback, FavoriteDrink
 from secret import API_SECRET_KEY, API_BASE_URL
 from helpers import get_cocktails_from_api_response
 
@@ -127,7 +128,7 @@ def drink_by_category():
         data = res.json()
         cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('drinks/category.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/category.html', cocktails=cocktails)
 
 
 @app.route('/filter_alcohol')
@@ -143,7 +144,7 @@ def drink_by_alcoholic():
         data = res.json()
         cocktails = get_cocktails_from_api_response(data)
 
-    return render_template('drinks/filter_alcohol.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/filter_alcohol.html', cocktails=cocktails)
 
 
 @app.route('/ingredient')
@@ -157,9 +158,14 @@ def search_by_ingredients():
                            params={'i': ingredient})
 
         data = res.json()
-        cocktails = get_cocktails_from_api_response(data)
+        if data.get('drinks') == 'None Found':
+            flash("No drink found")
+            return render_template('drinks/ingredient.html', cocktails=cocktails)
+        else:
+            cocktails = get_cocktails_from_api_response(data)
+            return render_template('drinks/ingredient.html', cocktails=cocktails)
 
-    return render_template('drinks/ingredient.html', cocktails=cocktails, zip=zip)
+    return render_template('drinks/ingredient.html', cocktails=cocktails)
 
 
 #############################################################################
@@ -296,34 +302,114 @@ def logout():
 
 
 ##############################################################################
-
-# Create a users_show route that will show user home page with all its favorite drinks, its favorite drinks will use the base temple
-# to render the drinks, if any drinks in user favorite will show up
-    # <form method = "POST" action = "/users/favorite/{{ cocktail.id }}" >
-
-@app.route('/users/<int:user_id>')
-def users_show(user_id):
-    """Show user profile."""
-    user = User.query.get_or_404(user_id)
-
-    cocktail = Favorite.query.order_by(Favorite.drink_id).all()
-
-    for drink in cocktail:
-        print(f'{drink.drink_id}')
-
-    return render_template('users/favorite.html', user=user, cocktail=cocktail)
+# User Homepage
 
 
-##############################################################################
-# Homepage and error pages
+# @app.route('/users/<int:user_id>')
+# def users_show(user_id):
+#     """Show user profile."""
+#     user = User.query.get_or_404(user_id)
+
+#     print('Current User', user)
+
+    # cocktail = FavoriteDrink.query.order_by(FavoriteDrink.user_id).all()
+
+    # for drink in cocktail:
+    #     print(
+    #         f'{drink.drink_id} - {drink.drink_name} - {drink.drink_thum} - {drink.user_id}')
+
+    # return render_template('users/favorite.html', user=user)
+
 
 @app.route('/users/favorite')
 def user_favorite():
 
-    return render_template("users/favorite.html")
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+
+    if user:
+
+        all_drinks = FavoriteDrink.query.filter_by(
+            user_id=user_id).order_by(FavoriteDrink.id.desc()).all()
+
+        cocktails = []
+        for drink in all_drinks:
+            cocktail = {'name': drink.drink_name,
+                        'id': drink.drink_id, 'thumb': drink.drink_thum}
+            cocktails.append(cocktail)
+            print(cocktails)
+
+        return render_template("users/favorite.html", user=user, cocktails=cocktails, show_delete=True)
+
+    else:
+        return render_template("users/favorite.html")
 
 
-@app.errorhandler(404)
+@app.route('/users/favorite/<int:drink_id>', methods=["GET", "POST"])
+def add_favorite(drink_id):
+    """Add Drink id to user favorite."""
+
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+
+    # This way I can will repeat the same drink, even in the same user
+
+    # drink_object = FavoriteDrink.query.filter_by(
+    #     user_id=str(drink_id)).first()
+
+    # This way each drink will only be add once, if user1 have drink x, user2 will not be able to add the same drink
+
+    drink_object = FavoriteDrink.query.filter_by(
+        drink_id=str(drink_id)).first()
+
+    # print('Drink Obj', drink_object)
+
+    if not drink_object:
+        res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/lookup.php",
+                           params={'i': drink_id})
+
+        data = res.json()
+        drinks = data['drinks'][0]
+        drink_id = drinks['idDrink']
+        drink_name = drinks['strDrink']
+        drink_thum = drinks['strDrinkThumb']
+
+        new_drink = FavoriteDrink(drink_id=drink_id,
+                                  drink_name=drink_name, drink_thum=drink_thum, user_id=user_id)
+
+        db.session.add(new_drink)
+        db.session.commit()
+
+        return redirect(url_for('user_favorite'))
+
+    else:
+        flash("Drink already in favorites!")
+        return redirect(url_for('show_drinks_form'))
+
+# -------------------- Remove the favorite drinks  --------------------------->
+
+
+# @app.route('/users/delete/<int:drink_id>', methods=['POST'])
+# def delete_drink(drink_id):
+#     """Have currently-logged-in-user delete drink."""
+
+#     if not g.user:
+#         flash("Access unauthorized.", "danger")
+#         return redirect("/")
+
+#     user_favorite_drink = FavoriteDrink.query.get(drink_id)
+
+#     print('********', user_favorite_drink)
+#     db.session.delete(user_favorite_drink)
+#     db.session.commit()
+
+#     return redirect(f"/users/favorite")
+
+
+##############################################################################
+
+
+@ app.errorhandler(404)
 def page_not_found(e):
     """404 NOT FOUND page."""
 
@@ -337,7 +423,7 @@ def page_not_found(e):
 #
 # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
 
-@app.after_request
+@ app.after_request
 def add_header(req):
     """Add non-caching headers on every request."""
 

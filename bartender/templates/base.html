@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bartender</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -38,7 +41,8 @@
             <li><a href="/signup" class="text-white">Signup</a></li>
             {% else %}
             
-            <li><a href="/users/{{ g.user.id }}" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
+            <!-- <li><a href="/users/{{ g.user.id }}" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li> -->
+            <li><a href="/users/favorite" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
             <li><a href="/logout" class="text-white">Logout</a></li>
             {% endif %}
         </form>
@@ -60,10 +64,13 @@
   <div class="alert alert-{{ category }}">{{ message }}</div>
   {% endfor %}
 
+  
+
   <div class="album py-5">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% if cocktails %}
+        
         {% for cocktail in cocktails %}
         <div class="col">
           <div class="card shadow-lg">
@@ -72,29 +79,47 @@
               <div class="d-flex justify-content-between align-items-center">
                 <p class="text-center">{{ cocktail.name }}</p>
                 <div class="btn-group">
+
                   <a href="/drink_details?drink_id={{cocktail.id}}">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                   </a>
+
                   {% if g.user %}
-                  <form method="POST" action="/users/favorite/{{ cocktail.id }}">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
-                  </form>
-                  {% else %}
-                  <a href="/signup">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
-                  </a>
-                  {% endif %}
+                  {% if show_delete %}
+                  <!-- <a href="/users/favorite">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                  </a> -->
+                      <form method="POST"
+                            action="/users/delete/{{cocktail.id}}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+
+                      </form>
+                      {% else %}
+                      <a href="/users/favorite/{{cocktail.id}}">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                      </a>
+                      {% endif %}
+                      {% else %}
+                        <a href="/signup">
+                          <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            {% endfor %}
+            {% endif %}
           </div>
         </div>
-        {% endfor %}
-        {% endif %}
       </div>
     </div>
-  </div>
-</div>
+                  
+
+
+
+
 
 
   <footer class="text-muted py-5 mt-3">

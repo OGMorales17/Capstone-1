@@ -23,6 +23,7 @@ class User(db.Model):
     email = db.Column(db.Text, nullable=False, unique=True,)
     username = db.Column(db.Text, nullable=False, unique=True,)
     password = db.Column(db.Text, nullable=False,)
+    favorite_drinks = db.relationship('FavoriteDrink')
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
@@ -64,27 +65,16 @@ class User(db.Model):
         return False
 
 
-class Drink(db.Model):
+class FavoriteDrink(db.Model):
     """  """
-    __tablename__ = 'drinks'
+    __tablename__ = 'favorite_drinks'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    drink_id = db.Column(db.Text, nullable=False, unique=True)
-    name = db.Column(db.Text, nullable=False, unique=True)
-    thum = db.Column(db.Text, nullable=False, unique=True)
-
-
-class Favorite(db.Model):
-    """  """
-
-    __tablename__ = 'favorites'
-
-    id = db.Column(db.Integer, primary_key=True)
-
+    drink_id = db.Column(db.Text, nullable=False, unique=False)
+    drink_name = db.Column(db.Text, nullable=False, unique=False)
+    drink_thum = db.Column(db.Text, nullable=False, unique=False)
     user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.id', ondelete='cascade'))
-    drink_id = db.Column(db.Integer, db.ForeignKey(
-        'drinks.drink_id', ondelete='cascade'))
+        'users.id', ondelete='cascade'), nullable=False,)
 
 
 class Feedback(db.Model):
@@ -97,7 +87,7 @@ class Feedback(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='cascade'))
     drink_id = db.Column(db.Integer, db.ForeignKey(
-        'drinks.drink_id', ondelete='cascade'))
+        'favorite_drinks.id', ondelete='cascade'))
     rating = db.Column(db.Integer, nullable=False)
 
 
