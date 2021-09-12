@@ -174,3 +174,59 @@
 #     drink_id = db.Column(db.Integer, db.ForeignKey(
 #         'drinks.id', ondelete='cascade'))
 #     rating = db.Column(db.Integer, nullable=False)
+
+
+# ------------------------------------------------------------------------------------
+
+# class UserDrink(db.Model):
+#     __tablename__ = 'user_drinks'
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     drink_id = db.Column(db.Text, db.ForeignKey(
+#         'drink.id', ondelete='cascade'), nullable=False,)
+#     user_id = db.Column(db.Integer, db.ForeignKey(
+#         'users.id', ondelete='cascade'), nullable=False,)
+
+
+# class Drink(db.Model):
+#     """  """
+#     __tablename__ = 'drinks'
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     drink_id = db.Column(db.Text, nullable=False, unique=False)
+#     drink_name = db.Column(db.Text, nullable=False, unique=False)
+#     drink_thum = db.Column(db.Text, nullable=False, unique=False)
+#     # user_id = db.Column(db.Integer, db.ForeignKey(
+#     #     'users.id', ondelete='cascade'), nullable=False,)
+
+# ------------------------------------------------------------------------------------
+
+
+# @app.route('/users/<int:user_id>')
+# def users_show(user_id):
+#     """Show user profile."""
+# user = User.query.get_or_404(user_id)
+
+# print('Current User', user)
+
+# cocktail = FavoriteDrink.query.order_by(FavoriteDrink.user_id).all()
+
+# for drink in cocktail:
+#     print(
+#         f'{drink.drink_id} - {drink.drink_name} - {drink.drink_thum} - {drink.user_id}')
+
+# return render_template('users/favorite.html', user=user)
+
+
+class Feedback(db.Model):
+    """User giving feedback to the drinks."""
+
+    __tablename__ = 'feedbacks'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete='cascade'))
+    drink_id = db.Column(db.Integer, db.ForeignKey(
+        'favorite_drinks.id', ondelete='cascade'))
+    rating = db.Column(db.Integer, nullable=False)

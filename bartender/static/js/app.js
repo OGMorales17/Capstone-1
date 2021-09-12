@@ -3,19 +3,7 @@ document.getElementById('go-back').addEventListener('click', () => {
 });
 
 
-// function add_fav(drink_id, user_id) {
 
-//   $.post('/users/favorite/' + drink_id,
-//     { 'user_id': user_id },
-//     function (response) {
-//       if (response.success) {
-//         alert("Drink added!")
-//       } else {
-//         alert("Failed to add Drink.")
-//       }
-
-//     });
-// }
 
 
 

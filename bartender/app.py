@@ -2,15 +2,13 @@ import os
 from re import M, search
 
 from flask import Flask, render_template, request, flash, redirect, session, g, abort, url_for
-from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 import psycopg2
 import itertools
-import pdb
 
-from forms import UserAddForm, UserEditForm, LoginForm, FeedbackForm
-from models import db, connect_db, User, Feedback, FavoriteDrink
+from forms import UserAddForm, LoginForm
+from models import db, connect_db, User, FavoriteDrink
 from secret import API_SECRET_KEY, API_BASE_URL
 from helpers import get_cocktails_from_api_response
 
@@ -29,7 +27,6 @@ app.config['SECRET_KEY'] = (os.environ.get('API_SECRET_KEY', 'Is a secret'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-# toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
@@ -305,22 +302,6 @@ def logout():
 # User Homepage
 
 
-# @app.route('/users/<int:user_id>')
-# def users_show(user_id):
-#     """Show user profile."""
-#     user = User.query.get_or_404(user_id)
-
-#     print('Current User', user)
-
-    # cocktail = FavoriteDrink.query.order_by(FavoriteDrink.user_id).all()
-
-    # for drink in cocktail:
-    #     print(
-    #         f'{drink.drink_id} - {drink.drink_name} - {drink.drink_thum} - {drink.user_id}')
-
-    # return render_template('users/favorite.html', user=user)
-
-
 @app.route('/users/favorite')
 def user_favorite():
 
@@ -336,11 +317,10 @@ def user_favorite():
         for drink in all_drinks:
             cocktail = {'name': drink.drink_name,
                         'id': drink.drink_id, 'thumb': drink.drink_thum}
+
             cocktails.append(cocktail)
-            print(cocktails)
 
         return render_template("users/favorite.html", user=user, cocktails=cocktails, show_delete=True)
-
     else:
         return render_template("users/favorite.html")
 
@@ -352,17 +332,10 @@ def add_favorite(drink_id):
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
 
-    # This way I can will repeat the same drink, even in the same user
-
-    # drink_object = FavoriteDrink.query.filter_by(
-    #     user_id=str(drink_id)).first()
-
-    # This way each drink will only be add once, if user1 have drink x, user2 will not be able to add the same drink
-
     drink_object = FavoriteDrink.query.filter_by(
-        drink_id=str(drink_id)).first()
-
-    # print('Drink Obj', drink_object)
+        drink_id=str(drink_id),
+        user_id=str(user_id)
+    ).all()
 
     if not drink_object:
         res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/lookup.php",
@@ -389,27 +362,30 @@ def add_favorite(drink_id):
 # -------------------- Remove the favorite drinks  --------------------------->
 
 
-# @app.route('/users/delete/<int:drink_id>', methods=['POST'])
-# def delete_drink(drink_id):
-#     """Have currently-logged-in-user delete drink."""
+@app.route('/users/delete/<int:drink_id>', methods=["GET", "POST"])
+def delete_drink(drink_id):
+    """Have currently-logged-in-user delete drink."""
 
-#     if not g.user:
-#         flash("Access unauthorized.", "danger")
-#         return redirect("/")
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
-#     user_favorite_drink = FavoriteDrink.query.get(drink_id)
+    user_favorite_drink = FavoriteDrink.query.filter_by(
+        drink_id=str(drink_id),
+        user_id=str(g.user.id)
+    ).first()
 
-#     print('********', user_favorite_drink)
-#     db.session.delete(user_favorite_drink)
-#     db.session.commit()
+    print('********', user_favorite_drink)
+    db.session.delete(user_favorite_drink)
+    db.session.commit()
 
-#     return redirect(f"/users/favorite")
+    return redirect(f"/users/favorite")
 
 
 ##############################################################################
 
 
-@ app.errorhandler(404)
+@app.errorhandler(404)
 def page_not_found(e):
     """404 NOT FOUND page."""
 

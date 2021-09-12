@@ -4,14 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
-# In the Drink table add, drink_id, thum, and remove drink_info
-# add a function in the User table that will check if drink_id is within User Favorite, if found return it.
-# In the user favorite.html only show the cocktail name and thum, but if the user click on detail, then make an API request of just for that expecific drink_id, and render into drink detail page
-
-# In the Favorite table remove the FK to the Drink id and make a new one to the drink_id
-
-# In the Feedback table remove the FK to the Drink id and make a new one to the drink_id, also remove content from the table and use the rating only, this way I'm not letting the user write conten that may not be appropiate to the view of others.
-
 
 class User(db.Model):
     """User in the system."""
@@ -75,20 +67,6 @@ class FavoriteDrink(db.Model):
     drink_thum = db.Column(db.Text, nullable=False, unique=False)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='cascade'), nullable=False,)
-
-
-class Feedback(db.Model):
-    """User giving feedback to the drinks."""
-
-    __tablename__ = 'feedbacks'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.id', ondelete='cascade'))
-    drink_id = db.Column(db.Integer, db.ForeignKey(
-        'favorite_drinks.id', ondelete='cascade'))
-    rating = db.Column(db.Integer, nullable=False)
 
 
 def connect_db(app):

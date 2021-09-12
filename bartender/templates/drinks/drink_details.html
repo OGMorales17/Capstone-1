@@ -14,7 +14,9 @@
 
 
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark"> -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top py-3" id="custom-nav">
+    
     <div class="container-fluid mx-5">
       <a class="navbar-brand" href="/"><i class="fas fa-cocktail"></i>Drinks</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,14 +35,14 @@
           </li>
         </ul>
         <form class="d-flex">
-            {% if not g.user %}
-            <li><a href="/login" class="text-white">Login</a></li>
-            <li><a href="/signup" class="text-white">Signup</a></li>
-            {% else %}
-            
-            <li><a href="/users/{{ g.user.id }}" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
-            <li><a href="/logout" class="text-white">Logout</a></li>
-            {% endif %}
+          {% if not g.user %}
+          <li><a href="/login" class="text-white">Login</a></li>
+          <li><a href="/signup" class="text-white">Signup</a></li>
+          {% else %}
+          
+          <li><a href="/users/{{ g.user.id }}" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
+          <li><a href="/logout" class="text-white">Logout</a></li>
+          {% endif %}
         </form>
       </div>
     </div>
@@ -50,25 +52,23 @@
 
 
 
-<main>
-	<div class="container text-center">
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-    <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}
-		<hr class="featurette-divider">
 
-		  <div class="row featurette">
+<main>
+  <section class="py-5 text-center container mt-4">
+      <hr class="featurette-divider">
+      
+      <div class="row featurette">
         <div class="col-md-7 order-md-2">
           {% for cocktail in cocktails %}
           <h2 class="featurette-heading">{{ cocktail.name }}.</h2>
           <p class="lead">{{ cocktail.instructions }}</p>
           <ul>
-          {% for i,m in zip(cocktail.ingredients, cocktail.measurements) %}
-          <ul><p>{{ m }}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{ i }}</p></ul>
-          {% endfor %}
+            {% for i,m in zip(cocktail.ingredients, cocktail.measurements) %}
+            <ul><p>{{ m }}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{ i }}</p></ul>
+            {% endfor %}
           </ul>
           <div class="btn-group">
-          {% if g.user %}
+            {% if g.user %}
             <form method="POST" action="/users/favorite/{{ cocktail.id }}">
               <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
             </form>
@@ -76,7 +76,7 @@
             <a href="/signup">
               <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
             </a>
-          {% endif %}
+            {% endif %}
           </div>
           <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-secondary" id="go-back">Go back!</button>
@@ -89,19 +89,21 @@
           </div>
         </div>
       </div>
-
-    <hr class="featurette-divider">
-  </div>
-</main>
-
-            
-<footer class="text-muted py-5 mt-5">
+      
+      <hr class="featurette-divider">
+  </section>
+  </main>
+  
+  
+<footer class="text-muted py-5">
   <div class="container">
     <p class="float-end mb-1">
       <a href="#">Back to top</a>
     </p>
-    <p class="mb-2">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p class="mb-0">Don't know what to pick, Not worries, we can pick a <a href="/random_cocktails" class="link-secondary" name="random_cocktails">random selection</a> fo you  <a href="../getting-started/introduction/"></a>.</p>
+    <p class="mb-3">Don't know what to pick, Not worries, we can pick a <a href="/random_cocktails" name="random_cocktails">random selection</a> fo you.</p>
+
+    <p class="mb-0">Or you can go to the top and search by the name, You don't remember the name! Not worries.</p>
+    <p class="mb-0">Click <a href="/letter">here</a>  and seach by the first letter.</p>
   </div>
 </footer>
 
@@ -114,9 +116,9 @@
 </body>
 
 </html>
-        
-  
-  
+
+
+
 
 
 
