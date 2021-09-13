@@ -7,7 +7,7 @@ import requests
 import psycopg2
 import itertools
 
-from forms import UserAddForm, LoginForm
+from forms import UserAddForm, LoginForm, PasswordResetForm
 from models import db, connect_db, User, FavoriteDrink
 from secret import API_SECRET_KEY, API_BASE_URL
 from helpers import get_cocktails_from_api_response
@@ -37,12 +37,14 @@ connect_db(app)
 @app.route('/')
 def show_drinks_form():
     cocktails = most_popular_cocktails()
+
     return render_template("home.html", cocktails=cocktails)
 
 
 @app.route('/random_cocktails')
 def random_drinks_form():
     cocktails = random_cocktails()
+
     return render_template("drinks/random_cocktails.html", cocktails=cocktails)
 
 
@@ -59,7 +61,13 @@ def drink_by_name():
                        params={'s': name})
 
     data = res.json()
-    cocktails = get_cocktails_from_api_response(data)
+
+    if data.get('drinks') == None:
+        flash("No drink name found", "danger")
+        return redirect('/')
+    else:
+
+        cocktails = get_cocktails_from_api_response(data)
 
     return render_template('drinks/index.html', cocktails=cocktails)
 
@@ -81,13 +89,17 @@ def by_name_on_random():
 
 @app.route('/search_by_letter')
 def search_by_letter():
-
     letter = request.args['letter']
     res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/search.php",
                        params={'f': letter})
 
     data = res.json()
-    cocktails = get_cocktails_from_api_response(data)
+    if data.get('drinks') == None:
+        flash("No drink name found", "danger")
+        return redirect('/letter')
+    else:
+
+        cocktails = get_cocktails_from_api_response(data)
 
     return render_template('drinks/letter.html', cocktails=cocktails)
 
@@ -148,7 +160,6 @@ def drink_by_alcoholic():
 def search_by_ingredients():
 
     ingredient = request.args.get('ingredient')
-    cocktails = []
 
     if ingredient:
         res = requests.get(f"{API_BASE_URL}/{API_SECRET_KEY}/filter.php",
@@ -156,13 +167,14 @@ def search_by_ingredients():
 
         data = res.json()
         if data.get('drinks') == 'None Found':
-            flash("No drink found")
-            return render_template('drinks/ingredient.html', cocktails=cocktails)
+            flash("No drink found", "danger")
+            return render_template('drinks/ingredient.html')
+
         else:
             cocktails = get_cocktails_from_api_response(data)
             return render_template('drinks/ingredient.html', cocktails=cocktails)
 
-    return render_template('drinks/ingredient.html', cocktails=cocktails)
+    return render_template('drinks/ingredient.html')
 
 
 #############################################################################
@@ -287,6 +299,33 @@ def login():
 
     return render_template('users/login.html', form=form)
 
+# -------------------------------------------------------------------------------------------------------
+
+
+@app.route('/reset_account', methods=["GET", "POST"])
+def reset_account():
+    """Handle user account reset."""
+
+    form = PasswordResetForm()
+    # Currently this form is not validating
+    if form.validate_on_submit():
+        user = User.authenticate(form.username.data,
+                                 form.email.data)
+
+        if user:
+            # Add logic, change do_login for do_reset, create a do_reset function, that will render a form
+            # and this form will delete the current password associate with the user by having the user typing in to the form the
+            # newlly created password and redirect to do_login
+            do_login(user)
+            flash(f"Hello, {user.username}!", "success")
+            return redirect("/")
+
+        flash("Invalid credentials.", 'danger')
+
+    return render_template('users/reset_account.html', form=form)
+
+# -------------------------------------------------------------------------------------------------------
+
 
 @app.route('/logout')
 def logout():
@@ -375,7 +414,6 @@ def delete_drink(drink_id):
         user_id=str(g.user.id)
     ).first()
 
-    print('********', user_favorite_drink)
     db.session.delete(user_favorite_drink)
     db.session.commit()
 

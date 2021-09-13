@@ -40,7 +40,7 @@
           <li><a href="/signup" class="text-white">Signup</a></li>
           {% else %}
           
-          <li><a href="/users/{{ g.user.id }}" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
+          <li><a href="/users/favorite" class="text-white"><i class="fas fa-user-alt fa-lg"></i></a></li>
           <li><a href="/logout" class="text-white">Logout</a></li>
           {% endif %}
         </form>
@@ -48,9 +48,6 @@
     </div>
   </nav>
 </header>
-
-
-
 
 
 <main>
@@ -69,9 +66,9 @@
           </ul>
           <div class="btn-group">
             {% if g.user %}
-            <form method="POST" action="/users/favorite/{{ cocktail.id }}">
+            <a href="/users/favorite/{{cocktail.id}}">
               <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
-            </form>
+            </a>
             {% else %}
             <a href="/signup">
               <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
@@ -83,7 +80,7 @@
           </div>
         </div>
         <div class="col-md-5 order-md-1">
-          <div class="card shadow-sm">
+          <div class="card shadow-lg">
             <img class="contain rounded-3" src="{{ cocktail.thumb }}" alt="">
             {% endfor %}
           </div>
@@ -93,6 +90,10 @@
       <hr class="featurette-divider">
   </section>
   </main>
+
+
+
+
   
   
 <footer class="text-muted py-5">

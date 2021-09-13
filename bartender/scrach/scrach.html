@@ -1,35 +1,3 @@
-
-
-{% block content %}
-  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Welcome back</h1>
-      </div>
-    </div>
-  </section>
-
-
-  <div class="row justify-content-md-center">
-    <div class="col-md-7 col-lg-5">
-      <form method="POST" id="user_form">
-        {{ form.hidden_tag() }}
-
-        {% for field in form if field.widget.input_type != 'hidden' %}
-          {% for error in field.errors %}
-            <span class="text-danger">{{ error }}</span>
-          {% endfor %}
-          {{ field(placeholder=field.label.text, class="form-control") }}
-        {% endfor %}
-
-        <button class="btn btn-primary btn-block btn-lg">Log in</button>
-      </form>
-    </div>
-  </div>
-
-{% endblock %}
-
-
 <!-- ------------------------------------------------ -->
 
 	<!-- <div class="container">
@@ -60,82 +28,13 @@
 	</div> -->
 
 
-<!-- ------------------------------------------------ -->
-
-
-
-
-  <div class="container">
-    <div class="row justify-content">
-      <div class="col-md-auto">
-      <ul>
-      {% for measurement in cocktail.measurements %}
-      <ul>{{ measurement }} - </ul>
-      {% endfor %}
-      </ul>
-      </div>
-      <div class="col-md-auto">
-      <ul>
-      {% for ingredient in cocktail.ingredients %}
-      <ul>{{ ingredient }}</ul>
-      {% endfor %}
-      </ul>
-      </div>
-    </div>
-  </div>
-
-<!-- ------------------------------------------------ -->
-
-<!-- This code is for putting ingredients and measurement side by side-->
-
-
   <ul>
   {% for i,m in zip(cocktail.ingredients, cocktail.measurements) %}
   <ul>{{ i }} - {{ m }}</ul>
   {% endfor %}
   </ul>
 
-<!-- ------------------------------------------------ -->
 
-
-
-    {% if cocktails|length == 0 %}
-    <h3>Sorry, no cocktails found</h3>
-  {% else %}
-  {% for cocktail in cocktails %}
-    <div class="row justify-content-center">
-      <div class="col-sm-9">
-        <div class="row">
-        <div class="card user-card">
-          <div class="card-inner">
-            <img class="contain" src="{{ cocktail.thumb }}" alt="">
-            <div class="card-contents"><p>{{ cocktail.name }}</p></div>
-            <p> {{ cocktail.instructions }}</p>
-            <div class="container">
-            <div class="row justify-content">
-              <div class="col-md-auto">
-              <ul>
-                {% for ingredient in cocktail.ingredients %}
-                <ul>{{ ingredient }}</ul>
-                {% endfor %}
-              </ul>
-              </div>
-              <div class="col-md-auto">
-              <ul>
-                {% for measurement in cocktail.measurements %}
-                <ul>{{ measurement }}</ul>
-                {% endfor %}
-              </ul>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-   {% endfor %}
-  {% endif %}
 
 
   <!-- ----------------------------------------------------------------- -->

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <section class="py-5 text-center container">    
+  <section class="py-5 text-center container mt-5">    
     <div class="row py-5 text-center justify-content-md-center">
       <div class="col-md-7 col-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto mb-5">
@@ -19,8 +19,7 @@
           {% endfor %}
           {{ field(placeholder=field.label.text, class="form-control") }}
           {% endfor %}
-          
-          <button class="btn btn-primary btn-lg btn-block">Sign me up!</button>
+          <button type="button" class="btn btn-outline-primary">Sign me up!</button>
         </form>
       </div>
     </div>

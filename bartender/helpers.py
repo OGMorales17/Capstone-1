@@ -13,4 +13,3 @@ def get_cocktails_from_api_response(data):
 
         cocktails.append(cocktail)
     return cocktails
-# --------------------------------------------------------------------------------------- #

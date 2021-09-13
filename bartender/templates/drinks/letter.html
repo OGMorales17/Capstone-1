@@ -10,9 +10,11 @@
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Search by Letter</h1>
         <p class="lead text-muted">A&nbsp;&nbsp;B&nbsp;&nbsp;C&nbsp;&nbsp;D&nbsp;&nbsp;E&nbsp;&nbsp;F&nbsp;&nbsp;G&nbsp;&nbsp;H&nbsp;&nbsp;I&nbsp;&nbsp;J&nbsp;&nbsp;K&nbsp;&nbsp;L&nbsp;&nbsp;M&nbsp;&nbsp;N&nbsp;&nbsp;O&nbsp;&nbsp;P&nbsp;&nbsp;Q&nbsp;&nbsp;R&nbsp;&nbsp;S&nbsp;&nbsp;T&nbsp;&nbsp;U&nbsp;&nbsp;V&nbsp;&nbsp;W&nbsp;&nbsp;X&nbsp;&nbsp;Y&nbsp;&nbsp;Z.</p>
+        <p class="lead text-muted">Or by number: 1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;6&nbsp;&nbsp;7&nbsp;&nbsp;9&nbsp;&nbsp;</p>
 
       <form class="d-flex" action="/search_by_letter">
-        <input class="form-control me-2" type="text" name="letter" style="text-transform: capitalize;" placeholder="Search By Letter" aria-label="Search">
+        <input class="form-control me-2" type="text" name="letter" required
+        maxlength="1" style="text-transform: capitalize;" placeholder="Search By Letter" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
       </div>
