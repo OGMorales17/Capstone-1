@@ -59,10 +59,14 @@
   {% block content %}
   
   {% endblock %}
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
-  {% endfor %}
-
+  <div class="row">
+      <!-- <div class="container text-center col-md-4 col-md-offset-4"> -->
+      <div class="container text-center  w-25">
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+      </div>
+  </div>
   
 
   <div class="album py-5">
@@ -83,18 +87,24 @@
                   </a>
                   {% if g.user %}
                   {% if show_delete %}
+                  <span class="input-group-btn mx-1">
                   <a href="/users/delete/{{cocktail.id}}">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
                   </a>
+                  </span>
                   {% else %}
+                  <span class="input-group-btn mx-1">
                   <a href="/users/favorite/{{cocktail.id}}">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
                   </a>
+                  </span>
                   {% endif %}
                   {% else %}
+                  <span class="input-group-btn mx-1">
                   <a href="/signup">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Save it</button>
                   </a>
+                  </span>
                   {% endif %}
                 </div>
               </div>
