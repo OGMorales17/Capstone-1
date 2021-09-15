@@ -1,3 +1,7 @@
+body {
+  background-color: #f2f4fa;
+}
+
 .bd-placeholder-img {
 font-size: 1.125rem;
 text-anchor: middle;
@@ -52,8 +56,33 @@ user-select: none;
   }
 }
 
-/* .navbar {
-    -webkit-box-shadow: 0 8px 6px -6px #999;
-    -moz-box-shadow: 0 8px 6px -6px #999;
-    box-shadow: 0 8px 6px -6px #999;
-} */
+.navbar {
+    -webkit-box-shadow: 0 8px 6px -6px #828283;
+    -moz-box-shadow: 0 8px 6px -6px #828283;
+    box-shadow: 0 8px 6px -6px #828283;
+}
+
+
+/*********************  Background and Home Anon   *************************/
+
+.home-hero {
+  height: 100vh;
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  left: 0;
+  z-index: -1;
+  background: url('/static/images/alexander-mils-ocku3zjNM7k-unsplash.jpg') no-repeat center center/cover;
+  filter: blur(0px);
+  background-size: cover;
+  background-position: center center;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+}
+

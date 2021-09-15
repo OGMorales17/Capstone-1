@@ -26,13 +26,13 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item dropdown">
-            <a class="nav-link" href="/category">Category</a>
+            <!-- <a class="nav-link" href="/category">Category</a> -->
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/filter_alcohol">Alcohol/Non Alcohol</a>
+            <!-- <a class="nav-link" href="/filter_alcohol">Alcohol/Non Alcohol</a> -->
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/ingredient">Ingredients</a>
+            <!-- <a class="nav-link" href="/ingredient">Ingredients</a> -->
           </li>
         </ul>
         <form class="d-flex">
@@ -59,7 +59,6 @@
   {% block content %}
   
   {% endblock %}
-  
   <div class="row">
       <div class="container text-center  w-25">
       {% for category, message in get_flashed_messages(with_categories=True) %}
@@ -125,10 +124,10 @@
     <p class="float-end mb-1">
       <a href="#">Back to top</a>
     </p>
-    <p class="mb-3">Don't know what to pick, Not worries, we can pick a <a href="/random_cocktails" name="random_cocktails">random selection</a> fo you.</p>
+    <p class="mb-3">Don't know what to pick, Not worries, we can pick a <a href="#" name="random_cocktails">random selection</a> fo you.</p>
 
     <p class="mb-0">Or you can go to the top and search by the name, You don't remember the name! Not worries.</p>
-    <p class="mb-0">Click <a href="/letter">here</a>  and seach by the first letter.</p>
+    <p class="mb-0">Click <a href="#">here</a>  and seach by the first letter.</p>
   </div>
 </footer>
                   
@@ -142,14 +141,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-    

@@ -1,3 +1,4 @@
+<!-- This reset account is not working -->
 {% extends 'base.html' %}
 
 {% block title %}Account Reset{% endblock %}
@@ -9,6 +10,7 @@
       <div class="col-md-7 col-lg-5">
         <div class="col-lg-8 col-md-8 mx-auto mb-5">
         <h1 class="fw-light">Reset my Account</h1>
+        <p class="lead text-muted">Sorry we can't reset your account at this moment.</p>
         </div>
         <form method="POST" id="user_form">
           {{ form.hidden_tag() }}
