@@ -1,11 +1,11 @@
-/venv
-/secret.py
-/__pycache__
-/.DS_Store
-/.vscode
+venv/
+.vscode/
+.DS_Store/
+secret.py
+__pycache__
 
-# venv/
-# .vscode/
-# .DS_Store/
-# secret.py
-# __pycache__
+# /venv
+# /secret.py
+# /__pycache__
+# /.DS_Store
+# /.vscode
