@@ -1,5 +1,5 @@
-/venv
-/secret.py
-/__pycache__
-/.DS_Store
+venv/
 .vscode/
+.DS_Store/
+secret.py
+__pycache__
