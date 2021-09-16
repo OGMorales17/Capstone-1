@@ -1,5 +1,10 @@
-scrach/
 /venv
 /secret.py
 /__pycache__
 /.DS_Store
+/scrach/
+        .gitignore
+        scrach.py
+        scrach.js
+        scrach.css
+        scrach.html
