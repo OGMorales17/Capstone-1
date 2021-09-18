@@ -29,7 +29,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
 
-# -------------------------------------------------------------------------------------------------------
+
 # User signup/login/logout
 
 
