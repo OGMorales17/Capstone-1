@@ -1,15 +1,18 @@
-# <div align='center'>[Bartender](https://everybodybarman.herokuapp.com/)</div> 
+# Bartender 
 <br>  
 
-### This web app presents to the users a wide variety of drinks,  including in each drink: The picture and the name, where if you want to see the details it will be presented by cliking on details. To save the drinks you must signup.
-### Keep in mind that most of the drinks in this app are alcoholic, but not wories you will be able to narrow down your search in the navbar by selecting non alcoholic. 
+#### <div align='center'>[Try the App Here](https://everybodybarman.herokuapp.com/)</div>  
 <br>  
 
-### The API been use in this app is <a>[TheCocktailDB API](https://www.thecocktaildb.com/)</a> and this is the <a>[link](https://www.thecocktaildb.com/api.php)</a> for the documentation where more information will be found. 
+### This web app presents a wide variety of drinks to users. Each drink includes its name, picture and recipe. The recipe will be presented by cliking on details. To save any drink the user must sign up.
+<br>  
+
+### There is wide variety of drinks from alcoholic to non-alcoholic. The user will be able to narrow down the search. 
+<br>  
+
+### The API that is being used in this app is <a>[TheCocktailDB API](https://www.thecocktaildb.com/)</a> and the documentation can be found  <a>[here](https://www.thecocktaildb.com/api.php)</a>. 
 <br> 
 
-### If you took the time to read over the api documentation above you will see that the key provide it will not work if you are intended to lauch this app in the web, for that purpose you may want to request a private key that will have limitations or you could become a Patreon supporter for unlimited access.
-<br>  
 
 ## Installation 
 <hr>
