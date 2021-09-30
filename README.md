@@ -7,14 +7,14 @@
 
 <br>
 
-### This web app presents a wide variety of drinks to users. Each drink includes its name, picture and recipe. The twenty cocktail presented at the landing are with in the most populars in the data base, a search by name is also an option. The recipe will be presented by cliking on details. To save any drink the user must sign up.
-<br>  
+ This web app presents a wide variety of drinks to users. Each drink includes its name, picture and recipe. The twenty cocktail presented at the landing are with in the most populars in the data base, a search by name is also an option. The recipe will be presented by cliking on details. To save any drink the user must sign up.
+ 
 
-### The user will be able to narrow down the search in the navbar by clicking in Category, Alcohol/Non Alcohol or Ingredients.
+ The user will be able to narrow down the search in the navbar by clicking in Category, Alcohol/Non Alcohol or Ingredients.
 
-<br>  
+ 
 
-### On the very bottom of the page a footer has placed, where a link to a random selection of teen cocktail will present everytime is click, a search by name is also an option in the same. The other option is clicking on select by the first letter, which will render a new temple where the user will be able to type in any of the letter or number above the imput bar.
+ On the very bottom of the page a footer has placed, where a link to a random selection of teen cocktail will present everytime is click, a search by name is also an option in the same. The other option is clicking on select by the first letter, which will render a new temple where the user will be able to type in any of the letter or number above the imput bar.
   
 <br>  
 
