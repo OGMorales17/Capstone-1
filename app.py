@@ -19,7 +19,11 @@ app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL').replace("://", "ql://", 1) or 'postgresql:///bartender'
+    'DATABASE_URL', 'postgresql:///bartender')
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+#     'DATABASE_URL').replace("://", "ql://", 1) or 'postgresql:///bartender'
+
 app.config['SECRET_KEY'] = (os.environ.get('API_SECRET_KEY', 'Is a secret'))
 
 
