@@ -28,7 +28,6 @@
 
 
 ## Installation 
-<hr>
 
 ### Before You Begin
 You will need python3 and pip3 installed for this project. You will also need to setup a Postgres Database if you want to allow the user to save each drink, remember that in order to save the drink the user must login or signup, for that you will need a DB.
