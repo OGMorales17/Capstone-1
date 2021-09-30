@@ -16,9 +16,7 @@
 
  On the very bottom of the page a footer has placed, where a link to a random selection of teen cocktail will present everytime is click, a search by name is also an option in the same. The other option is clicking on select by the first letter, which will render a new temple where the user will be able to type in any of the letter or number above the imput bar.
   
-<br>  
-
-### This project consumes data from <a>[TheCocktailDB API](https://www.thecocktaildb.com/)</a> patreon supporter version, the documentation can be found  <a>[here](https://www.thecocktaildb.com/api.php)</a>. 
+ This project consumes data from <a>[TheCocktailDB API](https://www.thecocktaildb.com/)</a> patreon supporter version, the documentation can be found  <a>[here](https://www.thecocktaildb.com/api.php)</a>. 
 <br> 
 
 
